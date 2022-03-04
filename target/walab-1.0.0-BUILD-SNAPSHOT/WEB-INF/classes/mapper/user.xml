@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+	<insert id="insertUser" parameterType="hashmap">
+		INSERT INTO `user`(`email`, `status`) VALUES (#{email}, #{status})
+	</insert>
+	
+	<insert id="insertUserForAdmin" parameterType="edu.handong.walab.model.domain.User" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `user`(`email`, `status`) VALUES (#{email}, #{status})
+	</insert>
+	
+   	<select id="getUserDataByToken" resultType="edu.handong.walab.model.domain.User" parameterType="hashmap">
+   		SELECT * from user where token = #{token} and expire_token <![CDATA[ <]]> now() and del_date is null
+   	</select>
+   
+   	<select id="getUserDataByEmail" resultType="edu.handong.walab.model.domain.User" parameterType="hashmap">
+   		SELECT * from user where email = #{email}
+   			AND del_date IS NULL
+   	</select>
+   	
+   	<select id="getUserDataById" resultType="edu.handong.walab.model.domain.User" parameterType="hashmap">
+   		SELECT * from user where id = #{id}
+   			AND del_date IS NULL
+   	</select>
+   	
+   	<select id="readAllUser" resultType="edu.handong.walab.model.domain.User">
+   		SELECT * FROM user WHERE (status=0 or status = -1)
+   		<if test = "keyword != null">
+   			AND user.email like #{keyword}
+   		</if>
+   	</select>
+   	
+   	<select id="getLastId" resultType="Integer">
+   		SELECT id FROM user
+   		ORDER BY id DESC LIMIT 1
+   	</select>
+   
+   	<update id="updateUserToken" parameterType="hashmap">
+		UPDATE user SET token=#{token}, expire_token=#{expire_token} where id=#{id}
+	</update>
+	
+	<update id="deleteUserToken" parameterType="hashmap">
+		UPDATE user SET token="" where email=#{email}
+	</update>
+	
+	<update id="updateUserStatus" parameterType="hashmap">
+		UPDATE user SET status=#{status} where id=#{id}
+	</update>
+	
+	<delete id="deleteUser" parameterType="hashmap">
+		DELETE FROM `user` WHERE email= #{email}
+	</delete>
+	
+	<update id = "updateDelDate" parameterType="hashmap">
+   		UPDATE user SET del_date=now()
+		WHERE email = #{email}
+   	</update>
+   	
+   	<update id = "updateDelDateByUserId" parameterType="hashmap">
+   		UPDATE user SET del_date=now()
+		WHERE id = #{user_id}
+   	</update>
+   	
+</mapper>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="visitingLog">
+	<select id ="readFeedbackFile" parameterType="hashmap" resultType="string">
+   		SELECT img_url FROM feedback_image WHERE feedback_id = #{feedback_id} ORDER BY feedback_image.order
+   	</select>
+   	
+   	<select id ="readVisitingLogFile" parameterType="hashmap" resultType="string">
+   		SELECT img_url FROM visiting_log_image WHERE visiting_log_id = #{visiting_log_id} ORDER BY visiting_log_image.order
+   	</select>
+   	
+   	<select id ="readFeedbackFileByTopic" parameterType="hashmap" resultType="string">
+	   	SELECT img_url FROM feedback_image
+	   	
+		JOIN feedback 
+		ON feedback.id = feedback_image.feedback_id
+		
+		JOIN application_form 
+		ON feedback.application_form_id = application_form.id
+		
+		<if test="topic_id != null">
+			JOIN lecture_topic 
+			ON lecture_topic.lecture_id = application_form.lecture_id
+			
+			AND (
+			<foreach collection = 'topic_id' index='index' item = 'topic' separator=" OR ">
+	   		lecture_topic.topic_id = #{topic}
+	   		</foreach>
+	   		)
+		</if>
+		
+		ORDER BY feedback_image.order
+   		
+   	</select>
+   	
+   	<select id ="readFeedbackFileByDate" parameterType="hashmap" resultType="string">
+	   	SELECT img_url FROM feedback_image
+	   	
+		JOIN feedback 
+		ON feedback.id = feedback_image.feedback_id
+		
+		JOIN application_form 
+		ON feedback.application_form_id = application_form.id
+		<if test="date != null">
+        JOIN lecture_date
+        ON lecture_date.lecture_id = application_form.lecture_id
+        
+        WHERE lecture_date.date = #{date}
+		</if>
+		ORDER BY feedback_image.order
+   		
+   	</select>
+   	
+   	<select id ="readFeedbackFileByInstructor" parameterType="hashmap" resultType="string">
+   		SELECT feedback_image.img_url FROM (SELECT * FROM lecture 
+   		<if test="instructor_id != null">
+			where lecture.instructor_id = #{instructor_id}
+		</if>
+   		) as lectureInfo
+   		
+		JOIN application_form
+		ON application_form.lecture_id = lectureInfo.id
+		
+		JOIN feedback
+		ON feedback.application_form_id = application_form.id
+		
+		JOIN feedback_image
+		ON feedback_image.feedback_id = feedback.id
+		
+		ORDER BY feedback_image.order
+   	</select>
+   	
+   	<select id ="readFeedbackFileByLecture" parameterType="hashmap" resultType="string">
+   		SELECT feedback_image.img_url FROM (SELECT * FROM lecture 
+   		<if test="lecture_id != null">
+			where lecture.id = #{lecture_id}
+		</if>
+   		) as lectureInfo
+   		
+		JOIN application_form
+		ON application_form.lecture_id = lectureInfo.id
+		
+		JOIN feedback
+		ON feedback.application_form_id = application_form.id
+		
+		JOIN feedback_image
+		ON feedback_image.feedback_id = feedback.id
+		
+		ORDER BY feedback_image.order
+   	</select>
+   	
+   	<select id="readFeedbackByTopic" resultType="edu.handong.walab.model.dto.FeedbackByLecture" parameterType="hashmap">
+        SELECT feedback.id, application_form_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id, position_id, position.name AS position_name, lecture.name AS lecture_name, church.name AS church_name, instructor_info.name AS instructor_name FROM 
+		(SELECT F.id, F.application_form_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id, A.church_id
+		FROM feedback AS F, application_form AS A
+		WHERE F.application_form_id = A.id) AS feedback
+		JOIN (SELECT lecture_id, GROUP_CONCAT(topic.name SEPARATOR ', ') as topic_list
+		from lecture_topic join topic on lecture_topic.topic_id = topic.id 
+		<if test="topic_id != null">
+			where topic.id IN
+			<foreach collection = 'topic_id' index='index' item = 'topic' open="(" close=")" separator=",">
+	   		#{topic}
+	   		</foreach>
+		</if>
+		GROUP BY lecture_id) as topic_info
+		on feedback.lecture_id = topic_info.lecture_id
+            JOIN lecture ON feedback.lecture_id = lecture.id
+            JOIN church ON church.id = feedback.church_id
+            JOIN instructor_info ON instructor_id = instructor_info.id
+            JOIN position ON position.id = instructor_info.position_id
+   	</select>
+   	
+   	<select id="readFeedbackByInstructor" resultType="edu.handong.walab.model.dto.FeedbackByLecture" parameterType="hashmap">
+   		SELECT feedback.id, application_form_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id, position_id, position.name AS position_name, lecture.name AS lecture_name, church.name AS church_name, instructor_info.name AS instructor_name FROM 
+		(SELECT F.id, F.application_form_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id, A.church_id
+		FROM feedback AS F, application_form AS A
+		WHERE F.application_form_id = A.id) AS feedback
+			LEFT JOIN (SELECT lecture_id, GROUP_CONCAT(topic.name SEPARATOR ', ') as topic_list
+				from lecture_topic join topic on lecture_topic.topic_id = topic.id GROUP BY lecture_id) as topic_info
+				on feedback.lecture_id = topic_info.lecture_id
+            JOIN lecture ON feedback.lecture_id = lecture.id
+            JOIN church ON church.id = feedback.church_id
+            JOIN instructor_info ON instructor_id = instructor_info.id
+            JOIN position ON position.id = instructor_info.position_id
+        <if test="instructor_id != null">
+			WHERE instructor_id = #{instructor_id}
+		</if>
+   	</select>
+   	
+   	<select id="readFeedbackByLecture" resultType="edu.handong.walab.model.dto.FeedbackByLecture" parameterType="hashmap">
+   	SELECT feedback.id, application_form_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id, lecture.name AS lecture_name, church.name AS church_name, instructor_info.name AS instructor_name FROM 
+		(SELECT F.id, F.application_form_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id, A.church_id
+		FROM feedback AS F, application_form AS A
+		WHERE F.application_form_id = A.id) AS feedback
+			LEFT JOIN (SELECT lecture_id, GROUP_CONCAT(topic.name SEPARATOR ', ') as topic_list
+				from lecture_topic join topic on lecture_topic.topic_id = topic.id GROUP BY lecture_id) as topic_info
+				on feedback.lecture_id = topic_info.lecture_id
+            JOIN lecture ON feedback.lecture_id = lecture.id
+            JOIN church ON church.id = feedback.church_id
+            JOIN instructor_info ON instructor_id = instructor_info.id
+        <if test="lecture_id != null">
+			WHERE feedback.lecture_id = #{lecture_id}
+		</if>
+    </select>
+    
+    <select id="readVisitingCreator" resultType="Integer" parameterType="hashmap">
+    	SELECT instructor_info.user_id FROM application_form, instructor_info, lecture
+		WHERE application_form.id = #{application_form_id} AND application_form.lecture_id = lecture.id
+        AND instructor_info.id = lecture.instructor_id
+    </select>
+   	
+   	<insert id="writeFeedback" parameterType="edu.handong.walab.model.domain.Feedback" useGeneratedKeys="true" keyProperty="id">
+   		INSERT INTO `feedback`(`application_form_id`, `lecture_star`, `instructor_star`, content) 
+   		VALUES (#{application_form_id}, #{lecture_star}, #{instructor_star}, #{content})
+   	</insert>
+   	
+   	<insert id="writeFeedbackFile" parameterType="hashmap">
+   		INSERT INTO `feedback_image`(`feedback_id`, `img_url`, `order`) 
+   		VALUES
+   		<foreach collection = 'fileData' index='id' item = 'file' separator = ', '>
+   		(#{feedback_id}, #{file}, ${id})
+   		</foreach>
+   	</insert>
+   	
+   	<insert id="writeVisitingLog" parameterType="edu.handong.walab.model.domain.Feedback" useGeneratedKeys="true" keyProperty="id">
+   		INSERT INTO `visiting_log`(`application_form_id`, content) 
+   		VALUES (#{application_form_id}, #{content})
+   	</insert>
+   	
+   	<insert id="writeVisitingLogFile" parameterType="hashmap">
+   		INSERT INTO visiting_log_image (visiting_log_id, img_url, visiting_log_image.order) 
+   		VALUES
+   		<foreach collection = 'fileData' index='id' item = 'file' separator = ', '>
+   		(#{visiting_log_id}, #{file}, #{id})
+   		</foreach>
+   	</insert>
+   	
+   	<delete id="delete" parameterType="hashmap">
+   		DELETE FROM visiting_log
+   		WHERE id = #{id}
+   	</delete>
+   	
+   	<delete id="deleteFile" parameterType="hashmap">
+   		DELETE FROM visiting_log_image
+   		WHERE visiting_log_id = #{id}
+   	</delete>
+   	
+   	<delete id="deleteFeedback" parameterType="hashmap">
+   		DELETE FROM feedback
+		WHERE id = #{id}
+   	</delete>
+   	
+   	<delete id="deleteFeedbackFile" parameterType="hashmap">
+   		DELETE FROM feedback_image
+   		WHERE feedback_id = #{id}
+   		AND #{manageID} = (SELECT * FROM (SELECT user_id FROM feedback, application_form WHERE feedback.id = #{id} AND feedback.application_form_id = application_form.id) writer)
+   	</delete>
+
+</mapper>
