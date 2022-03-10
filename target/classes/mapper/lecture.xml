@@ -182,9 +182,9 @@
 			AND L.instructor_id = #{instructor_id}
 		</if>) AS lecture
 
-	LEFT JOIN (SELECT AF.id as form_id, AF.lecture_id, AF.lecture_date_id, AF.contact_start_date, AF.contact_end_date, AF.status, AF.admin_name, if(AF.church_id != 0, (select church.name as church_name from church where church.id = AF.church_id), (select church_temp.name as church_name from church_temp
-    	where church_temp.application_form_id = AF.id))as church_name
-		FROM application_form AS AF) AS form
+	LEFT JOIN (SELECT AF.id as form_id, AF.lecture_id, AF.lecture_date_id, AF.contact_start_date, AF.contact_end_date, AF.status, AF.admin_name, if(AF.church_id != 0, (select church.name as church_name from church where church.id = AF.church_id), (select churchtemp.name as church_name from churchtemp
+    	where churchtemp.applicationform_id = AF.id))as church_name
+		FROM applicationform AS AF) AS form
 	ON form.lecture_date_id = lecture.date_id AND form.lecture_id = lecture.id
 
     LEFT JOIN (SELECT lecture_id, GROUP_CONCAT(region.name ORDER BY region.id SEPARATOR ', ') as region_list
@@ -208,9 +208,9 @@
 			AND L.id = #{lecture_id}
 		</if>) AS lecture
 
-	LEFT JOIN (SELECT AF.id as form_id, AF.lecture_id, AF.lecture_date_id, AF.contact_start_date, AF.contact_end_date, AF.status, AF.admin_name, if(AF.church_id != 0, (select church.name as church_name from church where church.id = AF.church_id), (select church_temp.name as church_name from church_temp
-    	where church_temp.application_form_id = AF.id))as church_name
-		FROM application_form AS AF) AS form
+	LEFT JOIN (SELECT AF.id as form_id, AF.lecture_id, AF.lecture_date_id, AF.contact_start_date, AF.contact_end_date, AF.status, AF.admin_name, if(AF.church_id != 0, (select church.name as church_name from church where church.id = AF.church_id), (select churchtemp.name as church_name from churchtemp
+    	where churchtemp.applicationform_id = AF.id))as church_name
+		FROM applicationform AS AF) AS form
 	ON form.lecture_date_id = lecture.date_id AND form.lecture_id = lecture.id
 
     LEFT JOIN (SELECT lecture_id, GROUP_CONCAT(region.name ORDER BY region.id SEPARATOR ', ') as region_list
@@ -329,10 +329,10 @@
 
 	<select id="getStatsByLecture" parameterType="hashmap" resultType="edu.handong.walab.model.dto.StatByLecture">
    		SELECT COUNT(*) AS all_lecture, COUNT(case when status=2 then 1 end) AS finish_lecture, COUNT(case when status!=2 then 1 end) AS not_finish_lecture, COUNT(DISTINCT instructor_id) AS inst_count, COUNT(DISTINCT (case when church_id != 0 then church_id end)) AS church_count FROM
-		(SELECT application_form.status, lecture.instructor_id, application_form.church_id FROM application_form, lecture
-		WHERE application_form.lecture_id = lecture.id
+		(SELECT applicationform.status, lecture.instructor_id, applicationform.church_id FROM applicationform, lecture
+		WHERE applicationform.lecture_id = lecture.id
 		<if test="period != null">
-	        AND application_form.reg_date >= date_add(now(), interval #{period} month)
+	        AND applicationform.reg_date >= date_add(now(), interval #{period} month)
         </if>
         ) AS result
    	</select>

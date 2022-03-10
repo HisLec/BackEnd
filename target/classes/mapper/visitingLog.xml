@@ -16,12 +16,12 @@
 		JOIN feedback 
 		ON feedback.id = feedback_image.feedback_id
 		
-		JOIN application_form 
-		ON feedback.application_form_id = application_form.id
+		JOIN applicationform 
+		ON feedback.applicationform_id = applicationform.id
 		
 		<if test="topic_id != null">
 			JOIN lecture_topic 
-			ON lecture_topic.lecture_id = application_form.lecture_id
+			ON lecture_topic.lecture_id = applicationform.lecture_id
 			
 			AND (
 			<foreach collection = 'topic_id' index='index' item = 'topic' separator=" OR ">
@@ -40,11 +40,11 @@
 		JOIN feedback 
 		ON feedback.id = feedback_image.feedback_id
 		
-		JOIN application_form 
-		ON feedback.application_form_id = application_form.id
+		JOIN applicationform 
+		ON feedback.applicationform_id = applicationform.id
 		<if test="date != null">
         JOIN lecture_date
-        ON lecture_date.lecture_id = application_form.lecture_id
+        ON lecture_date.lecture_id = applicationform.lecture_id
         
         WHERE lecture_date.date = #{date}
 		</if>
@@ -59,11 +59,11 @@
 		</if>
    		) as lectureInfo
    		
-		JOIN application_form
-		ON application_form.lecture_id = lectureInfo.id
+		JOIN applicationform
+		ON applicationform.lecture_id = lectureInfo.id
 		
 		JOIN feedback
-		ON feedback.application_form_id = application_form.id
+		ON feedback.applicationform_id = applicationform.id
 		
 		JOIN feedback_image
 		ON feedback_image.feedback_id = feedback.id
@@ -78,11 +78,11 @@
 		</if>
    		) as lectureInfo
    		
-		JOIN application_form
-		ON application_form.lecture_id = lectureInfo.id
+		JOIN applicationform
+		ON applicationform.lecture_id = lectureInfo.id
 		
 		JOIN feedback
-		ON feedback.application_form_id = application_form.id
+		ON feedback.applicationform_id = applicationform.id
 		
 		JOIN feedback_image
 		ON feedback_image.feedback_id = feedback.id
@@ -91,10 +91,10 @@
    	</select>
    	
    	<select id="readFeedbackByTopic" resultType="edu.handong.walab.model.dto.FeedbackByLecture" parameterType="hashmap">
-        SELECT feedback.id, application_form_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id, position_id, position.name AS position_name, lecture.name AS lecture_name, church.name AS church_name, instructor_info.name AS instructor_name FROM 
-		(SELECT F.id, F.application_form_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id, A.church_id
-		FROM feedback AS F, application_form AS A
-		WHERE F.application_form_id = A.id) AS feedback
+        SELECT feedback.id, applicationform_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id, position_id, position.name AS position_name, lecture.name AS lecture_name, church.name AS church_name, instructor_info.name AS instructor_name FROM 
+		(SELECT F.id, F.applicationform_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id, A.church_id
+		FROM feedback AS F, applicationform AS A
+		WHERE F.applicationform_id = A.id) AS feedback
 		JOIN (SELECT lecture_id, GROUP_CONCAT(topic.name SEPARATOR ', ') as topic_list
 		from lecture_topic join topic on lecture_topic.topic_id = topic.id 
 		<if test="topic_id != null">
@@ -112,10 +112,10 @@
    	</select>
    	
    	<select id="readFeedbackByInstructor" resultType="edu.handong.walab.model.dto.FeedbackByLecture" parameterType="hashmap">
-   		SELECT feedback.id, application_form_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id, position_id, position.name AS position_name, lecture.name AS lecture_name, church.name AS church_name, instructor_info.name AS instructor_name FROM 
-		(SELECT F.id, F.application_form_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id, A.church_id
-		FROM feedback AS F, application_form AS A
-		WHERE F.application_form_id = A.id) AS feedback
+   		SELECT feedback.id, applicationform_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id, position_id, position.name AS position_name, lecture.name AS lecture_name, church.name AS church_name, instructor_info.name AS instructor_name FROM 
+		(SELECT F.id, F.applicationform_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id, A.church_id
+		FROM feedback AS F, applicationform AS A
+		WHERE F.applicationform_id = A.id) AS feedback
 			LEFT JOIN (SELECT lecture_id, GROUP_CONCAT(topic.name SEPARATOR ', ') as topic_list
 				from lecture_topic join topic on lecture_topic.topic_id = topic.id GROUP BY lecture_id) as topic_info
 				on feedback.lecture_id = topic_info.lecture_id
@@ -129,10 +129,10 @@
    	</select>
    	
    	<select id="readFeedbackByLecture" resultType="edu.handong.walab.model.dto.FeedbackByLecture" parameterType="hashmap">
-   	SELECT feedback.id, application_form_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id, lecture.name AS lecture_name, church.name AS church_name, instructor_info.name AS instructor_name FROM 
-		(SELECT F.id, F.application_form_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id, A.church_id
-		FROM feedback AS F, application_form AS A
-		WHERE F.application_form_id = A.id) AS feedback
+   	SELECT feedback.id, applicationform_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id, lecture.name AS lecture_name, church.name AS church_name, instructor_info.name AS instructor_name FROM 
+		(SELECT F.id, F.applicationform_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id, A.church_id
+		FROM feedback AS F, applicationform AS A
+		WHERE F.applicationform_id = A.id) AS feedback
 			LEFT JOIN (SELECT lecture_id, GROUP_CONCAT(topic.name SEPARATOR ', ') as topic_list
 				from lecture_topic join topic on lecture_topic.topic_id = topic.id GROUP BY lecture_id) as topic_info
 				on feedback.lecture_id = topic_info.lecture_id
@@ -145,14 +145,14 @@
     </select>
     
     <select id="readVisitingCreator" resultType="Integer" parameterType="hashmap">
-    	SELECT instructor_info.user_id FROM application_form, instructor_info, lecture
-		WHERE application_form.id = #{application_form_id} AND application_form.lecture_id = lecture.id
+    	SELECT instructor_info.user_id FROM applicationform, instructor_info, lecture
+		WHERE applicationform.id = #{applicationform_id} AND applicationform.lecture_id = lecture.id
         AND instructor_info.id = lecture.instructor_id
     </select>
    	
    	<insert id="writeFeedback" parameterType="edu.handong.walab.model.domain.Feedback" useGeneratedKeys="true" keyProperty="id">
-   		INSERT INTO `feedback`(`application_form_id`, `lecture_star`, `instructor_star`, content) 
-   		VALUES (#{application_form_id}, #{lecture_star}, #{instructor_star}, #{content})
+   		INSERT INTO `feedback`(`applicationform_id`, `lecture_star`, `instructor_star`, content) 
+   		VALUES (#{applicationform_id}, #{lecture_star}, #{instructor_star}, #{content})
    	</insert>
    	
    	<insert id="writeFeedbackFile" parameterType="hashmap">
@@ -164,8 +164,8 @@
    	</insert>
    	
    	<insert id="writeVisitingLog" parameterType="edu.handong.walab.model.domain.Feedback" useGeneratedKeys="true" keyProperty="id">
-   		INSERT INTO `visiting_log`(`application_form_id`, content) 
-   		VALUES (#{application_form_id}, #{content})
+   		INSERT INTO `visiting_log`(`applicationform_id`, content) 
+   		VALUES (#{applicationform_id}, #{content})
    	</insert>
    	
    	<insert id="writeVisitingLogFile" parameterType="hashmap">
@@ -194,7 +194,7 @@
    	<delete id="deleteFeedbackFile" parameterType="hashmap">
    		DELETE FROM feedback_image
    		WHERE feedback_id = #{id}
-   		AND #{manageID} = (SELECT * FROM (SELECT user_id FROM feedback, application_form WHERE feedback.id = #{id} AND feedback.application_form_id = application_form.id) writer)
+   		AND #{manageID} = (SELECT * FROM (SELECT user_id FROM feedback, applicationform WHERE feedback.id = #{id} AND feedback.applicationform_id = applicationform.id) writer)
    	</delete>
 
 </mapper>

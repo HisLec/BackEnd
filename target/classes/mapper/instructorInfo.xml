@@ -76,14 +76,12 @@
 		INSERT INTO instructor_info (user_id, position_id, name, phone, image, intro, memo)
 		VALUES (#{user_id}, #{position_id}, #{name}, #{phone}, #{image}, #{intro}, #{memo})
 	</insert>
+
 	<update id="delete" parameterType="hashmap">
 		UPDATE instructor_info SET del_date=NOW()
 		WHERE id=#{instructor_id}
 	</update>
-	<update id="recover" parameterType="hashmap">
-		UPDATE instructor_info SET del_date = null
-		WHERE id = #{instructor_id}
-	</update>
+	
 	<select id="StatByInstPosition" parameterType="hashmap" resultType="edu.handong.walab.model.dto.StatByInstPosition">
    	SELECT position.name AS position_name, COUNT(*) AS position_count FROM instructor_info, position
 	WHERE instructor_info.position_id = position.id

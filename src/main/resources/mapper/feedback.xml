@@ -4,10 +4,10 @@
 <mapper namespace="feedabck">
 
 	<select id="readFeedbackByTopic" resultType="edu.handong.walab.model.dto.FeedbackByLecture" parameterType="hashmap">
-   		SELECT feedback.id, application_form_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id FROM
-		(SELECT F.id, F.application_form_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id AS lecture_id
-		FROM feedback AS F, application_form AS A
-		WHERE F.application_form_id = A.id) AS feedback
+   		SELECT feedback.id, applicationform_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id FROM
+		(SELECT F.id, F.applicationform_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id AS lecture_id
+		FROM feedback AS F, applicationform AS A
+		WHERE F.applicationform_id = A.id) AS feedback
 		LEFT JOIN (SELECT lecture_id, GROUP_CONCAT(topic.name SEPARATOR ', ') as topic_list
 		from lecture_topic join topic on lecture_topic.topic_id = topic.id 
 		<if test="topic_id != null">
@@ -21,10 +21,10 @@
    	</select>
    	
    	<select id="readFeedbackByInstructor" resultType="edu.handong.walab.model.dto.FeedbackByLecture" parameterType="hashmap">
-   		SELECT feedback.id, application_form_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id FROM 
-		(SELECT F.id, F.application_form_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id AS lecture_id
-		FROM feedback AS F, application_form AS A
-		WHERE F.application_form_id = A.id) AS feedback
+   		SELECT feedback.id, applicationform_id, lecture_star, instructor_star, content, feedback.reg_date, feedback.lecture_id, topic_list, instructor_id FROM 
+		(SELECT F.id, F.applicationform_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id AS lecture_id
+		FROM feedback AS F, applicationform AS A
+		WHERE F.applicationform_id = A.id) AS feedback
 			LEFT JOIN (SELECT lecture_id, GROUP_CONCAT(topic.name SEPARATOR ', ') as topic_list
 				from lecture_topic join topic on lecture_topic.topic_id = topic.id GROUP BY lecture_id) as topic_info
 				on feedback.lecture_id = topic_info.lecture_id
