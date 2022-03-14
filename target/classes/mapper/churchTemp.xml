@@ -3,8 +3,8 @@
 
 <mapper namespace="churchTemp">
 	<insert id="createChurchTemp" parameterType="hashmap">
-		INSERT INTO church_temp (applicationform_id, church_id, name, city, district, zip_code, addr1, addr2, writer_name, pastor, phone, email, status)
-		VALUES (#{applicationform_id}, #{church_id}, #{name}, #{city}, #{district}, #{zip_code}, #{addr1}, #{addr2}, #{writer_name}, #{pastor}, #{phone}, #{email}, 0)
+		INSERT INTO church_temp (application_form_id, church_id, name, city, district, zip_code, addr1, addr2, writer_name, pastor, phone, email, status)
+		VALUES (#{application_form_id}, #{church_id}, #{name}, #{city}, #{district}, #{zip_code}, #{addr1}, #{addr2}, #{writer_name}, #{pastor}, #{phone}, #{email}, 0)
 	</insert>
 	<update id="confirmChurchTemp">
 		UPDATE church_temp SET status=1
@@ -20,14 +20,14 @@
 	</select>
 	<select id ="readAllChurchTempData" parameterType="hashmap" resultType="edu.handong.walab.model.dto.compareChurchWithTemp">
 		SELECT 
-		applicationform.id as applicationform_id, applicationform.admin_name, applicationform.admin_phone, applicationform.reg_date,
+		applicationform.id as application_form_id, applicationform.admin_name, applicationform.admin_phone, applicationform.reg_date,
 		church.id as church_id, church.denomination, church.name, church.city, church.district, church.zip_code, church.addr1, church.addr2, church.pastor, church.phone, church.email,
 		church_temp.id as id, church_temp.name as new_name, church_temp.writer_name, church_temp.city as new_city , church_temp.district as new_district, church_temp.zip_code as new_zip_code, church_temp.addr1 as new_addr1, church_temp.addr2 as new_addr2, church_temp.pastor AS new_pastor, church_temp.phone AS new_phone, church_temp.email AS new_email, church_temp.status
 		FROM `church_temp` 
 		LEFT JOIN church
 		ON church.id = church_temp.church_id
 		JOIN applicationform 
-		ON church_temp.applicationform_id = applicationform.id
+		ON church_temp.application_form_id = applicationform.id
 		WHERE church_temp.status != -1
 		<if test="keyword != null">
 			AND applicationform.admin_name like #{keyword}
@@ -45,6 +45,6 @@
 	</select>
 	<delete id="delete" parameterType="hashmap">
 		DELETE FROM church_temp
-		WHERE id=#{applicationform_id}
+		WHERE id=#{application_form_id}
 	</delete>
 </mapper>
