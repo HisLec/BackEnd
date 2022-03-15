@@ -15,7 +15,7 @@
             if(app.church_id != 0, (select church.phone from church where church.id = app.church_id), (select churchtemp.phone from churchtemp where churchtemp.application_form_id = app.id))as phone,
             if(app.church_id != 0, (select church.email from church where church.id = app.church_id), (select churchtemp.email from churchtemp where churchtemp.application_form_id = app.id))as email,
 
-            (SELECT COUNT(*) FROM visiting_log WHERE visiting_log.application_form_id = app.id) AS isVisiting,
+            (SELECT COUNT(*) FROM visitinglog WHERE visitinglog.application_form_id = app.id) AS isVisiting,
             if(app.lecture_date_id != 0, (select lecture_date.date FROM lecture_date WHERE app.lecture_date_id = lecture_date.id), null) as date
 
 			FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_email, form.admin_phone, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone, lecture.name AS lecture_name, lecture.intro, inst.name AS inst_name
@@ -58,7 +58,7 @@
 
    	<select id="readApplicationForVisitingLog" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
    		SELECT  user_lecture.id, lecture_name, user_lecture.contact_start_date, user_lecture.contact_end_date, user_lecture.user_id, user_lecture.lecture_id, user_lecture.lecture_date_id, user_lecture.church_id, user_lecture.memo, user_lecture.admin_name, user_lecture.admin_phone, user_lecture.admin_email, user_lecture.attendee_number, user_lecture.attendee_target, user_lecture.status, user_lecture.timezone,
-   			user_lecture.date, user_lecture.reg_date, church_name, user_lecture.addr1, user_lecture.addr2, user_lecture.zip_code, user_lecture.phone, user_lecture.email, user_lecture.intro, inst_name, visiting_log.content as visit_log, visiting_log.reg_date as visit_reg_date, visiting_log.id as feedback_id
+   			user_lecture.date, user_lecture.reg_date, church_name, user_lecture.addr1, user_lecture.addr2, user_lecture.zip_code, user_lecture.phone, user_lecture.email, user_lecture.intro, inst_name, visitinglog.content as visit_log, visitinglog.reg_date as visit_reg_date, visitinglog.id as feedback_id
 
 		FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_phone, form.admin_email, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone,
    			date.date,
@@ -76,13 +76,13 @@
 	        AND lecture.instructor_id = inst.id
 	        AND form.status = 2
      		AND inst.user_id = #{instructor_id}) as user_lecture
-	    LEFT JOIN visiting_log ON visiting_log.application_form_id = user_lecture.id
+	    LEFT JOIN visitinglog ON visitinglog.application_form_id = user_lecture.id
 	</select>
 
 
    	<select id="readAllApplicationForVisitingLog" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
    		SELECT  user_lecture.id, lecture_name, user_lecture.contact_start_date, user_lecture.contact_end_date, user_lecture.user_id, user_lecture.lecture_id, user_lecture.lecture_date_id, user_lecture.church_id, user_lecture.memo, user_lecture.admin_name, user_lecture.admin_phone, user_lecture.admin_email, user_lecture.attendee_number, user_lecture.attendee_target, user_lecture.status, user_lecture.timezone,
-   			user_lecture.date, user_lecture.reg_date, church_name, user_lecture.addr1, user_lecture.addr2, user_lecture.zip_code, user_lecture.phone, user_lecture.email, user_lecture.intro, inst_name, visiting_log.content as visit_log, visiting_log.reg_date as visit_reg_date, visiting_log.id as feedback_id
+   			user_lecture.date, user_lecture.reg_date, church_name, user_lecture.addr1, user_lecture.addr2, user_lecture.zip_code, user_lecture.phone, user_lecture.email, user_lecture.intro, inst_name, visitinglog.content as visit_log, visitinglog.reg_date as visit_reg_date, visitinglog.id as feedback_id
 
 		FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_phone, form.admin_email, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone,
    			date.date, church.name as church_name, church.addr1, church.addr2, church.zip_code, church.phone, church.email, lecture.name AS lecture_name, lecture.intro, inst.name AS inst_name
@@ -94,7 +94,7 @@
 			AND form.church_id = church.id
 	        AND lecture.instructor_id = inst.id
 	        AND form.status = 2) as user_lecture
-	    LEFT JOIN visiting_log ON visiting_log.application_form_id = user_lecture.id
+	    LEFT JOIN visitinglog ON visitinglog.application_form_id = user_lecture.id
 	    <if test="keyword != null">
 	        WHERE lecture_name like #{keyword}
 	        OR admin_name like #{keyword}
@@ -146,7 +146,7 @@
                 if(user_lecture.church_id = 0, (select churchtemp.email FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.email) as email,
                 if(user_lecture.lecture_date_id != 0, (select lecture_date.date FROM lecture_date WHERE user_lecture.lecture_date_id = lecture_date.id), null) as date,
 
-                 user_lecture.intro, inst_name, position_id, position_name, feedback.content as visit_log, feedback.lecture_star, feedback.instructor_star, feedback.reg_date as visit_reg_date, feedback.id as feedback_id
+                 user_lecture.intro, inst_name, position_id, position_name, feedbacks.content as visit_log, feedbacks.lecture_star, feedbacks.instructor_star, feedbacks.reg_date as visit_reg_date, feedbacks.id as feedback_id
 
 		FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_phone, form.admin_email, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone, lecture.name AS lecture_name, lecture.intro, inst.name AS inst_name, inst.position_id, position.name AS position_name
 
@@ -158,7 +158,7 @@
 	        AND form.status != 2
      		AND form.user_id = #{user_id}) as user_lecture
         LEFT JOIN church ON user_lecture.church_id = church.id
-	    LEFT JOIN feedback ON feedback.application_form_id = user_lecture.id
+	    LEFT JOIN feedbacks ON feedbacks.application_form_id = user_lecture.id
    	</select>
 
    	<select id="readContactedApplicationForFeedback" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">

@@ -7,7 +7,7 @@
    	</select>
    	
    	<select id ="readVisitingLogFile" parameterType="hashmap" resultType="string">
-   		SELECT img_url FROM visiting_log_image WHERE visiting_log_id = #{visiting_log_id} ORDER BY visiting_log_image.order
+   		SELECT img_url FROM visitinglog_image WHERE visitinglog_id = #{visitinglog_id} ORDER BY visitinglog_image.order
    	</select>
    	
    	<select id ="readFeedbackFileByTopic" parameterType="hashmap" resultType="string">
@@ -164,26 +164,26 @@
    	</insert>
    	
    	<insert id="writeVisitingLog" parameterType="edu.handong.walab.model.domain.Feedback" useGeneratedKeys="true" keyProperty="id">
-   		INSERT INTO `visiting_log`(`application_form_id`, content) 
+   		INSERT INTO `visitinglog`(`application_form_id`, content) 
    		VALUES (#{application_form_id}, #{content})
    	</insert>
    	
    	<insert id="writeVisitingLogFile" parameterType="hashmap">
-   		INSERT INTO visiting_log_image (visiting_log_id, img_url, visiting_log_image.order) 
+   		INSERT INTO visitinglog_image (visitinglog_id, img_url, visitinglog_image.order) 
    		VALUES
    		<foreach collection = 'fileData' index='id' item = 'file' separator = ', '>
-   		(#{visiting_log_id}, #{file}, #{id})
+   		(#{visitinglog_id}, #{file}, #{id})
    		</foreach>
    	</insert>
    	
    	<delete id="delete" parameterType="hashmap">
-   		DELETE FROM visiting_log
+   		DELETE FROM visitinglog
    		WHERE id = #{id}
    	</delete>
    	
    	<delete id="deleteFile" parameterType="hashmap">
-   		DELETE FROM visiting_log_image
-   		WHERE visiting_log_id = #{id}
+   		DELETE FROM visitinglog_image
+   		WHERE visitinglog_id = #{id}
    	</delete>
    	
    	<delete id="deleteFeedback" parameterType="hashmap">
