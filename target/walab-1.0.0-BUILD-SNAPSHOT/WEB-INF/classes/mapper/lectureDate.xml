@@ -6,7 +6,7 @@
    		SELECT lecture_date.id, lecture_date.lecture_id, lecture_date.date, lecture_date.reg_date 
 		FROM lecture_date
 		LEFT JOIN 
-        (SELECT * FROM application_form WHERE application_form.status != -1) as app
+        (SELECT * FROM applicationform WHERE applicationform.status != -1) as app
          ON app.lecture_date_id = lecture_date.id
 		WHERE lecture_date.lecture_id = #{lecture_id}
         AND app.status is null

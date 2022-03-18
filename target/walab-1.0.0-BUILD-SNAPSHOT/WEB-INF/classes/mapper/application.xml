@@ -8,19 +8,19 @@
    			app.lecture_name, app.intro, app.inst_name,
             (SELECT email FROM user WHERE id = app.user_id) AS user_email,
 
-            if(app.church_id != 0, (select church.name as church_name from church where church.id = app.church_id), (select church_temp.name as church_name from church_temp where church_temp.application_form_id = app.id))as church_name,
-            if(app.church_id != 0, (select church.addr1 from church where church.id = app.church_id), (select church_temp.addr1 from church_temp where church_temp.application_form_id = app.id))as addr1,
-            if(app.church_id != 0, (select church.addr2 from church where church.id = app.church_id), (select church_temp.addr2 from church_temp where church_temp.application_form_id = app.id))as addr2,
-            if(app.church_id != 0, (select church.zip_code from church where church.id = app.church_id), (select church_temp.zip_code from church_temp where church_temp.application_form_id = app.id))as zip_code,
-            if(app.church_id != 0, (select church.phone from church where church.id = app.church_id), (select church_temp.phone from church_temp where church_temp.application_form_id = app.id))as phone,
-            if(app.church_id != 0, (select church.email from church where church.id = app.church_id), (select church_temp.email from church_temp where church_temp.application_form_id = app.id))as email,
+            if(app.church_id != 0, (select church.name as church_name from church where church.id = app.church_id), (select churchtemp.name as church_name from churchtemp where churchtemp.application_form_id = app.id))as church_name,
+            if(app.church_id != 0, (select church.addr1 from church where church.id = app.church_id), (select churchtemp.addr1 from churchtemp where churchtemp.application_form_id = app.id))as addr1,
+            if(app.church_id != 0, (select church.addr2 from church where church.id = app.church_id), (select churchtemp.addr2 from churchtemp where churchtemp.application_form_id = app.id))as addr2,
+            if(app.church_id != 0, (select church.zip_code from church where church.id = app.church_id), (select churchtemp.zip_code from churchtemp where churchtemp.application_form_id = app.id))as zip_code,
+            if(app.church_id != 0, (select church.phone from church where church.id = app.church_id), (select churchtemp.phone from churchtemp where churchtemp.application_form_id = app.id))as phone,
+            if(app.church_id != 0, (select church.email from church where church.id = app.church_id), (select churchtemp.email from churchtemp where churchtemp.application_form_id = app.id))as email,
 
-            (SELECT COUNT(*) FROM visiting_log WHERE visiting_log.application_form_id = app.id) AS isVisiting,
+            (SELECT COUNT(*) FROM visitinglog WHERE visitinglog.application_form_id = app.id) AS isVisiting,
             if(app.lecture_date_id != 0, (select lecture_date.date FROM lecture_date WHERE app.lecture_date_id = lecture_date.id), null) as date
 
 			FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_email, form.admin_phone, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone, lecture.name AS lecture_name, lecture.intro, inst.name AS inst_name
 
-			FROM `application_form` AS form, lecture, instructor_info AS inst
+			FROM `applicationform` AS form, lecture, instructor_info AS inst
 			        WHERE form.lecture_id = lecture.id
                   		AND inst.id = lecture.instructor_id
 			            AND lecture.instructor_id = #{instructor_id}
@@ -32,23 +32,23 @@
    		SELECT app.id, app.user_id, app.lecture_id, app.lecture_date_id, app.church_id, app.memo, app.admin_name, app.admin_phone, app.admin_email, app.attendee_number, app.attendee_target, app.status, app.contact_start_date, app.contact_end_date, app.reg_date, app.timezone,
    			app.date, app.lecture_name, app.intro, app.inst_name,
             (SELECT email FROM user WHERE id = app.user_id) AS user_email,
-            if(app.church_id != 0, (select church.name as church_name from church where church.id = app.church_id), (select church_temp.name as church_name from church_temp where church_temp.application_form_id = app.id))as church_name,
-            if(app.church_id != 0, (select church.addr1 from church where church.id = app.church_id), (select church_temp.addr1 from church_temp where church_temp.application_form_id = app.id)) as addr1,
-            if(app.church_id != 0, (select church.addr2 from church where church.id = app.church_id), (select church_temp.addr2 from church_temp where church_temp.application_form_id = app.id)) as addr2,
-            if(app.church_id != 0, (select church.zip_code from church where church.id = app.church_id), (select church_temp.zip_code from church_temp where church_temp.application_form_id = app.id)) as zip_code,
-            if(app.church_id != 0, (select church.phone from church where church.id = app.church_id), (select church_temp.phone from church_temp where church_temp.application_form_id = app.id)) as phone,
-            if(app.church_id != 0, (select church.email from church where church.id = app.church_id), (select church_temp.email from church_temp where church_temp.application_form_id = app.id)) as email
+            if(app.church_id != 0, (select church.name as church_name from church where church.id = app.church_id), (select churchtemp.name as church_name from churchtemp where churchtemp.application_form_id = app.id))as church_name,
+            if(app.church_id != 0, (select church.addr1 from church where church.id = app.church_id), (select churchtemp.addr1 from churchtemp where churchtemp.application_form_id = app.id)) as addr1,
+            if(app.church_id != 0, (select church.addr2 from church where church.id = app.church_id), (select churchtemp.addr2 from churchtemp where churchtemp.application_form_id = app.id)) as addr2,
+            if(app.church_id != 0, (select church.zip_code from church where church.id = app.church_id), (select churchtemp.zip_code from churchtemp where churchtemp.application_form_id = app.id)) as zip_code,
+            if(app.church_id != 0, (select church.phone from church where church.id = app.church_id), (select churchtemp.phone from churchtemp where churchtemp.application_form_id = app.id)) as phone,
+            if(app.church_id != 0, (select church.email from church where church.id = app.church_id), (select churchtemp.email from churchtemp where churchtemp.application_form_id = app.id)) as email
 
 			FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_phone, form.admin_email, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone, lecture.name AS lecture_name, lecture.intro, inst.name AS inst_name,
                   if(form.lecture_date_id != 0, (select lecture_date.date from lecture_date where form.lecture_date_id = lecture_date.id), "추후 협의") as date
-			FROM `application_form` AS form, lecture, instructor_info AS inst
+			FROM `applicationform` AS form, lecture, instructor_info AS inst
 			        WHERE form.lecture_id = lecture.id
                   		AND inst.id = lecture.instructor_id
                   		ORDER BY form.reg_date) AS app
             <if test="keyword != null">
             WHERE (app.admin_name like #{keyword} OR app.admin_phone like #{keyword}
-                OR if(app.church_id != 0, (select church.name as church_name from church where church.id = app.church_id), (select church_temp.name as church_name from church_temp where church_temp.application_form_id = app.id)) like #{keyword}
-                OR if(app.church_id != 0, (select church.addr1 from church where church.id = app.church_id), (select church_temp.addr1 from church_temp where church_temp.application_form_id = app.id))  like  #{keyword}
+                OR if(app.church_id != 0, (select church.name as church_name from church where church.id = app.church_id), (select churchtemp.name as church_name from churchtemp where churchtemp.application_form_id = app.id)) like #{keyword}
+                OR if(app.church_id != 0, (select church.addr1 from church where church.id = app.church_id), (select churchtemp.addr1 from churchtemp where churchtemp.application_form_id = app.id))  like  #{keyword}
                 OR app.lecture_name like #{keyword} OR app.inst_name like  #{keyword})
             </if>
             <if test="status != -2">
@@ -56,45 +56,45 @@
             </if>
    	</select>
 
-   	<select id="readApplicationForVisitingLog" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
+   	<select id="readApplicationForVisitingLog" resultType="edu.handong.walab.model.dto.ApplicationWithfeedbacks" parameterType="hashmap">
    		SELECT  user_lecture.id, lecture_name, user_lecture.contact_start_date, user_lecture.contact_end_date, user_lecture.user_id, user_lecture.lecture_id, user_lecture.lecture_date_id, user_lecture.church_id, user_lecture.memo, user_lecture.admin_name, user_lecture.admin_phone, user_lecture.admin_email, user_lecture.attendee_number, user_lecture.attendee_target, user_lecture.status, user_lecture.timezone,
-   			user_lecture.date, user_lecture.reg_date, church_name, user_lecture.addr1, user_lecture.addr2, user_lecture.zip_code, user_lecture.phone, user_lecture.email, user_lecture.intro, inst_name, visiting_log.content as visit_log, visiting_log.reg_date as visit_reg_date, visiting_log.id as feedback_id
+   			user_lecture.date, user_lecture.reg_date, church_name, user_lecture.addr1, user_lecture.addr2, user_lecture.zip_code, user_lecture.phone, user_lecture.email, user_lecture.intro, inst_name, visitinglog.content as visit_log, visitinglog.reg_date as visit_reg_date, visitinglog.id as feedbacks_id
 
 		FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_phone, form.admin_email, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone,
    			date.date,
-            if(form.church_id != 0, (select church.name as church_name from church where church.id = form.church_id), (select church_temp.name as church_name from church_temp where church_temp.application_form_id = form.id))as church_name,
-            if(form.church_id != 0, (select church.addr1 from church where church.id = form.church_id), (select church_temp.addr1 from church_temp where church_temp.application_form_id = form.id)) as addr1,
-            if(form.church_id != 0, (select church.addr2 from church where church.id = form.church_id), (select church_temp.addr2 from church_temp where church_temp.application_form_id = form.id)) as addr2,
-            if(form.church_id != 0, (select church.zip_code from church where church.id = form.church_id), (select church_temp.zip_code from church_temp where church_temp.application_form_id = form.id)) as zip_code,
-            if(form.church_id != 0, (select church.phone from church where church.id = form.church_id), (select church_temp.phone from church_temp where church_temp.application_form_id = form.id)) as phone,
-            if(form.church_id != 0, (select church.email from church where church.id = form.church_id), (select church_temp.email from church_temp where church_temp.application_form_id = form.id)) as email,
+            if(form.church_id != 0, (select church.name as church_name from church where church.id = form.church_id), (select churchtemp.name as church_name from churchtemp where churchtemp.application_form_id = form.id))as church_name,
+            if(form.church_id != 0, (select church.addr1 from church where church.id = form.church_id), (select churchtemp.addr1 from churchtemp where churchtemp.application_form_id = form.id)) as addr1,
+            if(form.church_id != 0, (select church.addr2 from church where church.id = form.church_id), (select churchtemp.addr2 from churchtemp where churchtemp.application_form_id = form.id)) as addr2,
+            if(form.church_id != 0, (select church.zip_code from church where church.id = form.church_id), (select churchtemp.zip_code from churchtemp where churchtemp.application_form_id = form.id)) as zip_code,
+            if(form.church_id != 0, (select church.phone from church where church.id = form.church_id), (select churchtemp.phone from churchtemp where churchtemp.application_form_id = form.id)) as phone,
+            if(form.church_id != 0, (select church.email from church where church.id = form.church_id), (select churchtemp.email from churchtemp where churchtemp.application_form_id = form.id)) as email,
               lecture.name AS lecture_name, lecture.intro, inst.name AS inst_name
-		FROM `application_form` AS form, lecture_date AS date, lecture, instructor_info AS inst
+		FROM `applicationform` AS form, lecture_date AS date, lecture, instructor_info AS inst
 
 		WHERE form.lecture_id = lecture.id
 			AND date.id = form.lecture_date_id
 	        AND lecture.instructor_id = inst.id
 	        AND form.status = 2
      		AND inst.user_id = #{instructor_id}) as user_lecture
-	    LEFT JOIN visiting_log ON visiting_log.application_form_id = user_lecture.id
+	    LEFT JOIN visitinglog ON visitinglog.application_form_id = user_lecture.id
 	</select>
 
 
-   	<select id="readAllApplicationForVisitingLog" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
+   	<select id="readAllApplicationForVisitingLog" resultType="edu.handong.walab.model.dto.ApplicationWithfeedbacks" parameterType="hashmap">
    		SELECT  user_lecture.id, lecture_name, user_lecture.contact_start_date, user_lecture.contact_end_date, user_lecture.user_id, user_lecture.lecture_id, user_lecture.lecture_date_id, user_lecture.church_id, user_lecture.memo, user_lecture.admin_name, user_lecture.admin_phone, user_lecture.admin_email, user_lecture.attendee_number, user_lecture.attendee_target, user_lecture.status, user_lecture.timezone,
-   			user_lecture.date, user_lecture.reg_date, church_name, user_lecture.addr1, user_lecture.addr2, user_lecture.zip_code, user_lecture.phone, user_lecture.email, user_lecture.intro, inst_name, visiting_log.content as visit_log, visiting_log.reg_date as visit_reg_date, visiting_log.id as feedback_id
+   			user_lecture.date, user_lecture.reg_date, church_name, user_lecture.addr1, user_lecture.addr2, user_lecture.zip_code, user_lecture.phone, user_lecture.email, user_lecture.intro, inst_name, visitinglog.content as visit_log, visitinglog.reg_date as visit_reg_date, visitinglog.id as feedbacks_id
 
 		FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_phone, form.admin_email, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone,
    			date.date, church.name as church_name, church.addr1, church.addr2, church.zip_code, church.phone, church.email, lecture.name AS lecture_name, lecture.intro, inst.name AS inst_name
 
-		FROM `application_form` AS form, lecture_date AS date, church, lecture, instructor_info AS inst
+		FROM `applicationform` AS form, lecture_date AS date, church, lecture, instructor_info AS inst
 
 		WHERE form.lecture_id = lecture.id
 			AND date.id = form.lecture_date_id
 			AND form.church_id = church.id
 	        AND lecture.instructor_id = inst.id
 	        AND form.status = 2) as user_lecture
-	    LEFT JOIN visiting_log ON visiting_log.application_form_id = user_lecture.id
+	    LEFT JOIN visitinglog ON visitinglog.application_form_id = user_lecture.id
 	    <if test="keyword != null">
 	        WHERE lecture_name like #{keyword}
 	        OR admin_name like #{keyword}
@@ -106,23 +106,23 @@
         </if>
    	</select>
 
-   	<select id="readApplicationForContact" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
+   	<select id="readApplicationForContact" resultType="edu.handong.walab.model.dto.ApplicationWithfeedbacks" parameterType="hashmap">
    		SELECT  user_lecture.id, lecture_name, user_lecture.contact_start_date, user_lecture.contact_end_date, user_lecture.user_id, user_lecture.lecture_id, user_lecture.lecture_date_id, user_lecture.church_id, user_lecture.memo, user_lecture.admin_name, user_lecture.admin_phone, user_lecture.admin_email, user_lecture.attendee_number, user_lecture.attendee_target, user_lecture.status, user_lecture.timezone,
 	  			user_lecture.date, user_lecture.reg_date,
 
-                if(user_lecture.church_id = 0, (select church_temp.name FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.name) as church_name,
-                if(user_lecture.church_id = 0, (select church_temp.addr1 FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.addr1) as addr1,
-                if(user_lecture.church_id = 0, (select church_temp.addr2 FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.addr2) as addr2,
-                if(user_lecture.church_id = 0, (select church_temp.zip_code FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.zip_code) as zip_code,
-                if(user_lecture.church_id = 0, (select church_temp.phone FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.phone) as phone,
-                if(user_lecture.church_id = 0, (select church_temp.email FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.email) as email,
+                if(user_lecture.church_id = 0, (select churchtemp.name FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.name) as church_name,
+                if(user_lecture.church_id = 0, (select churchtemp.addr1 FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.addr1) as addr1,
+                if(user_lecture.church_id = 0, (select churchtemp.addr2 FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.addr2) as addr2,
+                if(user_lecture.church_id = 0, (select churchtemp.zip_code FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.zip_code) as zip_code,
+                if(user_lecture.church_id = 0, (select churchtemp.phone FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.phone) as phone,
+                if(user_lecture.church_id = 0, (select churchtemp.email FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.email) as email,
 
-                 user_lecture.intro, inst_name, position_id, position_name, feedback.content as visit_log, feedback.lecture_star, feedback.instructor_star, feedback.reg_date as visit_reg_date, feedback.id as feedback_id
+                 user_lecture.intro, inst_name, position_id, position_name, feedbacks.content as visit_log, feedbacks.lecture_star, feedbacks.instructor_star, feedbacks.reg_date as visit_reg_date, feedbacks.id as feedbacks_id
 
 		FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_phone, form.admin_email, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone,
 	  			date.date, lecture.name AS lecture_name, lecture.intro, inst.name AS inst_name, inst.position_id, position.name AS position_name
 
-		FROM `application_form` AS form, lecture_date AS date, lecture, instructor_info AS inst, position
+		FROM `applicationform` AS form, lecture_date AS date, lecture, instructor_info AS inst, position
 
 		WHERE form.lecture_id = lecture.id
 			AND date.id = form.lecture_date_id
@@ -131,26 +131,26 @@
 	        AND form.status != 2
      		AND form.user_id = #{user_id}) as user_lecture
         LEFT JOIN church ON user_lecture.church_id = church.id
-	    LEFT JOIN feedback ON feedback.application_form_id = user_lecture.id
+	    LEFT JOIN feedbacks ON feedbacks.application_form_id = user_lecture.id
    	</select>
 
-   	<select id="readApplicationForFeedback" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
+   	<select id="readApplicationForfeedbacks" resultType="edu.handong.walab.model.dto.ApplicationWithfeedbacks" parameterType="hashmap">
 	   	SELECT  user_lecture.id, lecture_name, user_lecture.contact_start_date, user_lecture.contact_end_date, user_lecture.user_id, user_lecture.lecture_id, user_lecture.lecture_date_id, user_lecture.church_id, user_lecture.memo, user_lecture.admin_name, user_lecture.admin_phone, user_lecture.admin_email, user_lecture.attendee_number, user_lecture.attendee_target, user_lecture.status, user_lecture.timezone,
 	  			user_lecture.reg_date,
 
-                if(user_lecture.church_id = 0, (select church_temp.name FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.name) as church_name,
-                if(user_lecture.church_id = 0, (select church_temp.addr1 FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.addr1) as addr1,
-                if(user_lecture.church_id = 0, (select church_temp.addr2 FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.addr2) as addr2,
-                if(user_lecture.church_id = 0, (select church_temp.zip_code FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.zip_code) as zip_code,
-                if(user_lecture.church_id = 0, (select church_temp.phone FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.phone) as phone,
-                if(user_lecture.church_id = 0, (select church_temp.email FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.email) as email,
+                if(user_lecture.church_id = 0, (select churchtemp.name FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.name) as church_name,
+                if(user_lecture.church_id = 0, (select churchtemp.addr1 FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.addr1) as addr1,
+                if(user_lecture.church_id = 0, (select churchtemp.addr2 FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.addr2) as addr2,
+                if(user_lecture.church_id = 0, (select churchtemp.zip_code FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.zip_code) as zip_code,
+                if(user_lecture.church_id = 0, (select churchtemp.phone FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.phone) as phone,
+                if(user_lecture.church_id = 0, (select churchtemp.email FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.email) as email,
                 if(user_lecture.lecture_date_id != 0, (select lecture_date.date FROM lecture_date WHERE user_lecture.lecture_date_id = lecture_date.id), null) as date,
 
-                 user_lecture.intro, inst_name, position_id, position_name, feedback.content as visit_log, feedback.lecture_star, feedback.instructor_star, feedback.reg_date as visit_reg_date, feedback.id as feedback_id
+                 user_lecture.intro, inst_name, position_id, position_name, feedbackss.content as visit_log, feedbackss.lecture_star, feedbackss.instructor_star, feedbackss.reg_date as visit_reg_date, feedbackss.id as feedbacks_id
 
 		FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_phone, form.admin_email, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone, lecture.name AS lecture_name, lecture.intro, inst.name AS inst_name, inst.position_id, position.name AS position_name
 
-		FROM `application_form` AS form, lecture, instructor_info AS inst, position
+		FROM `applicationform` AS form, lecture, instructor_info AS inst, position
 
 		WHERE form.lecture_id = lecture.id
 	        AND lecture.instructor_id = inst.id
@@ -158,26 +158,26 @@
 	        AND form.status != 2
      		AND form.user_id = #{user_id}) as user_lecture
         LEFT JOIN church ON user_lecture.church_id = church.id
-	    LEFT JOIN feedback ON feedback.application_form_id = user_lecture.id
+	    LEFT JOIN feedbackss ON feedbackss.application_form_id = user_lecture.id
    	</select>
 
-   	<select id="readContactedApplicationForFeedback" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
+   	<select id="readContactedApplicationForfeedbacks" resultType="edu.handong.walab.model.dto.ApplicationWithfeedbacks" parameterType="hashmap">
    		SELECT  user_lecture.id, lecture_name, user_lecture.contact_start_date, user_lecture.contact_end_date, user_lecture.user_id, user_lecture.lecture_id, user_lecture.lecture_date_id, user_lecture.church_id, user_lecture.memo, user_lecture.admin_name, user_lecture.admin_phone, user_lecture.admin_email, user_lecture.attendee_number, user_lecture.attendee_target, user_lecture.status, user_lecture.timezone,
 	  			user_lecture.reg_date,
 
-                if(user_lecture.church_id = 0, (select church_temp.name FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.name) as church_name,
-                if(user_lecture.church_id = 0, (select church_temp.addr1 FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.addr1) as addr1,
-                if(user_lecture.church_id = 0, (select church_temp.addr2 FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.addr2) as addr2,
-                if(user_lecture.church_id = 0, (select church_temp.zip_code FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.zip_code) as zip_code,
-                if(user_lecture.church_id = 0, (select church_temp.phone FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.phone) as phone,
-                if(user_lecture.church_id = 0, (select church_temp.email FROM church_temp WHERE church_temp.application_form_id = user_lecture.id), church.email) as email,
+                if(user_lecture.church_id = 0, (select churchtemp.name FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.name) as church_name,
+                if(user_lecture.church_id = 0, (select churchtemp.addr1 FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.addr1) as addr1,
+                if(user_lecture.church_id = 0, (select churchtemp.addr2 FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.addr2) as addr2,
+                if(user_lecture.church_id = 0, (select churchtemp.zip_code FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.zip_code) as zip_code,
+                if(user_lecture.church_id = 0, (select churchtemp.phone FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.phone) as phone,
+                if(user_lecture.church_id = 0, (select churchtemp.email FROM churchtemp WHERE churchtemp.application_form_id = user_lecture.id), church.email) as email,
                 if(user_lecture.lecture_date_id != 0, (select lecture_date.date FROM lecture_date WHERE user_lecture.lecture_date_id = lecture_date.id), null) as date,
 
-                 user_lecture.intro, inst_name, position_id, position_name, feedback.content as visit_log, feedback.lecture_star, feedback.instructor_star, feedback.reg_date as visit_reg_date, feedback.id as feedback_id
+                 user_lecture.intro, inst_name, position_id, position_name, feedbacks.content as visit_log, feedbacks.lecture_star, feedbacks.instructor_star, feedbacks.reg_date as visit_reg_date, feedbacks.id as feedbacks_id
 
 		FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_phone, form.admin_email, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone, lecture.name AS lecture_name, lecture.intro, inst.name AS inst_name, inst.position_id, position.name AS position_name
 
-		FROM `application_form` AS form, lecture, instructor_info AS inst, position
+		FROM `applicationform` AS form, lecture, instructor_info AS inst, position
 
 		WHERE form.lecture_id = lecture.id
 	        AND lecture.instructor_id = inst.id
@@ -185,24 +185,24 @@
 	        AND form.status = 2
      		AND form.user_id = #{user_id}) as user_lecture
         LEFT JOIN church ON user_lecture.church_id = church.id
-	    LEFT JOIN feedback ON feedback.application_form_id = user_lecture.id
+	    LEFT JOIN feedbacks ON feedbacks.application_form_id = user_lecture.id
    	</select>
 
-   	<select id="readAllApplicationForFeedback" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
+   	<select id="readAllApplicationForfeedbacks" resultType="edu.handong.walab.model.dto.ApplicationWithfeedbacks" parameterType="hashmap">
    		SELECT  user_lecture.id, lecture_name, user_lecture.contact_start_date, user_lecture.contact_end_date, user_lecture.user_id, user_lecture.lecture_id, user_lecture.lecture_date_id, user_lecture.church_id, user_lecture.memo, user_lecture.admin_name, user_lecture.admin_phone,user_lecture.admin_email, user_lecture.attendee_number, user_lecture.attendee_target, user_lecture.status, user_lecture.timezone,
-   			user_lecture.date, user_lecture.reg_date, church_name, user_lecture.addr1, user_lecture.addr2, user_lecture.zip_code, user_lecture.phone, user_lecture.email, user_lecture.intro, inst_name, feedback.content as visit_log, feedback.lecture_star, feedback.instructor_star, feedback.reg_date as visit_reg_date, feedback.id as feedback_id
+   			user_lecture.date, user_lecture.reg_date, church_name, user_lecture.addr1, user_lecture.addr2, user_lecture.zip_code, user_lecture.phone, user_lecture.email, user_lecture.intro, inst_name, feedbacks.content as visit_log, feedbacks.lecture_star, feedbacks.instructor_star, feedbacks.reg_date as visit_reg_date, feedbacks.id as feedbacks_id
 
 		FROM (SELECT form.id, form.user_id, form.lecture_id, form.lecture_date_id, form.church_id, form.memo, form.admin_name, form.admin_phone, form.admin_email, form.attendee_number, form.attendee_target, form.status, form.contact_start_date, form.contact_end_date, form.reg_date, form.timezone,
    			date.date, church.name as church_name, church.addr1, church.addr2, church.zip_code, church.phone, church.email, lecture.name AS lecture_name, lecture.intro, inst.name AS inst_name
 
-		FROM `application_form` AS form, lecture_date AS date, church, lecture, instructor_info AS inst
+		FROM `applicationform` AS form, lecture_date AS date, church, lecture, instructor_info AS inst
 
 		WHERE form.lecture_id = lecture.id
 			AND date.id = form.lecture_date_id
 			AND form.church_id = church.id
 	        AND lecture.instructor_id = inst.id
      		AND form.status = 2) as user_lecture
-	    LEFT JOIN feedback ON feedback.application_form_id = user_lecture.id
+	    LEFT JOIN feedbacks ON feedbacks.application_form_id = user_lecture.id
 	    <if test="keyword != null">
 	        WHERE lecture_name like #{keyword}
 	        OR admin_name like #{keyword}
@@ -215,32 +215,32 @@
    	</select>
 
 	<update id="updateStatus" parameterType="hashmap">
-		UPDATE application_form SET status = #{status}
+		UPDATE applicationform SET status = #{status}
 		WHERE id = #{application_form_id}
 	</update>
 	
 	<select id="readByUserID" parameterType="hashmap" resultType="edu.handong.walab.model.domain.ApplicationForm">
-	SELECT * FROM application_form WHERE user_id = #{user_id}
+	SELECT * FROM applicationform WHERE user_id = #{user_id}
 	</select>
 	
 	<select id="readByID" parameterType="hashmap" resultType="edu.handong.walab.model.domain.ApplicationForm">
-	SELECT * FROM application_form WHERE id = #{application_form_id}
+	SELECT * FROM applicationform WHERE id = #{application_form_id}
 	</select>
 	
 	<update id="updateApplication" parameterType="hashmap">
-		UPDATE application_form
+		UPDATE applicationform
 		SET lecture_date_id = #{lecture_date_id}, status = 2, contact_start_date = #{contact_start_date}, contact_end_date=#{contact_end_date}, memo=#{contact_memo}
 		WHERE id = #{application_form_id}
 	</update>
 	<insert id="createApplication" parameterType="hashmap">
-		INSERT INTO application_form (user_id, lecture_id, lecture_date_id, church_id, memo, admin_phone, admin_name, admin_email, attendee_number, attendee_target, status, timezone)
+		INSERT INTO applicationform (user_id, lecture_id, lecture_date_id, church_id, memo, admin_phone, admin_name, admin_email, attendee_number, attendee_target, status, timezone)
 		VALUES (#{user_id}, #{lecture_id}, #{lecture_date_id}, #{church_id}, #{memo}, #{admin_phone}, #{admin_name}, #{admin_email}, #{attendee_number}, #{attendee_target}, 0, #{timezone})
 	</insert>
 	<select id="getLastId" resultType="Integer">
-		SELECT id FROM application_form ORDER BY id DESC LIMIT 1
+		SELECT id FROM applicationform ORDER BY id DESC LIMIT 1
 	</select>
 	<update id="updateChurchId" parameterType="hashmap">
-		UPDATE application_form
+		UPDATE applicationform
 		SET church_id = #{church_id}
 		WHERE id=#{application_form_id}
 	</update>
@@ -250,15 +250,15 @@
 		IF((SELECT church.denomination FROM church WHERE church.id = appli_form.church_id) is null, "기타", (SELECT church.denomination FROM church WHERE church.id = appli_form.church_id)) as name,
 		COUNT(*) as count
 
-		from (SELECT * FROM application_form WHERE application_form.status != -1
+		from (SELECT * FROM applicationform WHERE applicationform.status != -1
 		<if test="period == 1">
-		 and application_form.reg_date >= date_add(now(), INTERVAL -1 MONTH)
+		 and applicationform.reg_date >= date_add(now(), INTERVAL -1 MONTH)
 		</if>
 		<if test="period == 3">
-		 and application_form.reg_date >= date_add(now(), INTERVAL -3 MONTH)
+		 and applicationform.reg_date >= date_add(now(), INTERVAL -3 MONTH)
 		</if>
 		<if test="period == 12">
-		 and application_form.reg_date >= date_add(now(), INTERVAL -12 MONTH)
+		 and applicationform.reg_date >= date_add(now(), INTERVAL -12 MONTH)
 		</if>
 		) as appli_form
 
@@ -270,15 +270,15 @@
 		(SELECT position.name FROM position WHERE position.id = instructor_info.position_id) as position,
 		instructor_info.name, count(*) as count
 
-		from (SELECT * FROM application_form WHERE application_form.status = 2
+		from (SELECT * FROM applicationform WHERE applicationform.status = 2
 		<if test="period == 1">
-		 and application_form.reg_date >= date_add(now(), INTERVAL -1 MONTH)
+		 and applicationform.reg_date >= date_add(now(), INTERVAL -1 MONTH)
 		</if>
 		<if test="period == 3">
-		 and application_form.reg_date >= date_add(now(), INTERVAL -3 MONTH)
+		 and applicationform.reg_date >= date_add(now(), INTERVAL -3 MONTH)
 		</if>
 		<if test="period == 12">
-		 and application_form.reg_date >= date_add(now(), INTERVAL -12 MONTH)
+		 and applicationform.reg_date >= date_add(now(), INTERVAL -12 MONTH)
 		</if>
 		) as appli_form
 
@@ -294,33 +294,33 @@
 	<select id="statisticsBasedOnRegion" resultType = "edu.handong.walab.model.dto.Statistics">
 		SELECT
 		IF(church.city is null,
-		   IF(church_temp.city is null,
-		      (SELECT church2.city from church as church2 where church2.id = church_temp.church_id) , church_temp.city),
+		   IF(churchtemp.city is null,
+		      (SELECT church2.city from church as church2 where church2.id = churchtemp.church_id) , churchtemp.city),
 		   church.city) as name, COUNT(*) as count
-		FROM (SELECT * FROM application_form WHERE application_form.status != -1
+		FROM (SELECT * FROM applicationform WHERE applicationform.status != -1
 		<if test="period == 1">
-		 and application_form.reg_date >= date_add(now(), INTERVAL -1 MONTH)
+		 and applicationform.reg_date >= date_add(now(), INTERVAL -1 MONTH)
 		</if>
 		<if test="period == 3">
-		 and application_form.reg_date >= date_add(now(), INTERVAL -3 MONTH)
+		 and applicationform.reg_date >= date_add(now(), INTERVAL -3 MONTH)
 		</if>
 		<if test="period == 12">
-		 and application_form.reg_date >= date_add(now(), INTERVAL -12 MONTH)
+		 and applicationform.reg_date >= date_add(now(), INTERVAL -12 MONTH)
 		</if>
 		) as appli_form
 
 		LEFT JOIN church
 		ON appli_form.church_id = church.id
 
-		LEFT JOIN church_temp
-		ON appli_form.id = church_temp.application_form_id
+		LEFT JOIN churchtemp
+		ON appli_form.id = churchtemp.application_form_id
 		GROUP BY name
 	</select>
 
 	<update id="cancelNotFinishByInstructor" parameterType="hashmap">
-		UPDATE application_form SET status=-1
+		UPDATE applicationform SET status=-1
 		WHERE id
-			IN (SELECT * FROM (SELECT AF.id FROM application_form AS AF, lecture, lecture_date
+			IN (SELECT * FROM (SELECT AF.id FROM applicationform AS AF, lecture, lecture_date
 			WHERE AF.lecture_id = lecture.id
 				AND AF.lecture_date_id = lecture_date.id
 				AND lecture.instructor_id = #{instructor_id}
@@ -328,8 +328,8 @@
 	</update>
 
 	<update id="cancelFinishByInstructor" parameterType="hashmap">
-		UPDATE application_form SET status=-1
-		WHERE id IN (SELECT * FROM (SELECT AF.id FROM application_form AS AF, lecture, lecture_date
+		UPDATE applicationform SET status=-1
+		WHERE id IN (SELECT * FROM (SELECT AF.id FROM applicationform AS AF, lecture, lecture_date
 		WHERE AF.lecture_id = lecture.id
 			AND AF.lecture_date_id = lecture_date.id
 			AND lecture_date.date > curdate()
@@ -338,9 +338,9 @@
 	</update>
 
 	<update id="cancelNotFinishByLecture" parameterType="hashmap">
-		UPDATE application_form SET status=-1
+		UPDATE applicationform SET status=-1
 		WHERE id
-			IN (SELECT * FROM (SELECT AF.id FROM application_form AS AF, lecture, lecture_date
+			IN (SELECT * FROM (SELECT AF.id FROM applicationform AS AF, lecture, lecture_date
 			WHERE AF.lecture_id = lecture.id
 				AND AF.lecture_date_id = lecture_date.id
 				AND lecture.id = #{lecture_id}
@@ -348,9 +348,9 @@
 	</update>
 
 	<update id="cancelNotFinishByChurch" parameterType="hashmap">
-		UPDATE application_form SET status=-1
+		UPDATE applicationform SET status=-1
 		WHERE id
-			IN (SELECT * FROM (SELECT AF.id FROM application_form AS AF, lecture, lecture_date
+			IN (SELECT * FROM (SELECT AF.id FROM applicationform AS AF, lecture, lecture_date
 			WHERE AF.lecture_id = lecture.id
 				AND AF.lecture_date_id = lecture_date.id
 				AND AF.church_id = #{church_id}
@@ -358,9 +358,9 @@
 	</update>
 
 	<update id="cancelFinishByChurch" parameterType="hashmap">
-		UPDATE application_form SET status=-1
+		UPDATE applicationform SET status=-1
 		WHERE id
-	    IN (SELECT * FROM (SELECT AF.id FROM application_form AS AF, lecture, lecture_date
+	    IN (SELECT * FROM (SELECT AF.id FROM applicationform AS AF, lecture, lecture_date
 	            WHERE AF.lecture_id = lecture.id
 	                AND AF.lecture_date_id = lecture_date.id
 	                AND lecture_date.date > curdate()
@@ -369,8 +369,8 @@
 	</update>
 
 	<update id="cancelFinishByLecture" parameterType="hashmap">
-		UPDATE application_form SET status=-1
-		WHERE id IN (SELECT * FROM (SELECT AF.id FROM application_form AS AF, lecture, lecture_date
+		UPDATE applicationform SET status=-1
+		WHERE id IN (SELECT * FROM (SELECT AF.id FROM applicationform AS AF, lecture, lecture_date
 		WHERE AF.lecture_id = lecture.id
 			AND AF.lecture_date_id = lecture_date.id
 			AND lecture_date.date > curdate()
@@ -379,18 +379,18 @@
 	</update>
 
 	<select id="statAllData" resultType="edu.handong.walab.model.dto.StatAllData">
-		SELECT @rownum:=@rownum+1 AS number, if(application_form.church_id = 0, (SELECT church_temp.name FROM church_temp WHERE church_temp.application_form_id = application_form.id), (SELECT church.name FROM church WHERE church.id = application_form.church_id)) AS church_name,
-			if(application_form.church_id = 0, "", (SELECT church.denomination FROM church WHERE church.id = application_form.church_id)) AS denomination,
-		    if(application_form.church_id = 0, (SELECT church_temp.city FROM church_temp WHERE church_temp.application_form_id = application_form.id), (SELECT church.city FROM church WHERE church.id = application_form.church_id)) AS city,
-		    instructor_info.name, application_form.reg_date, lecture_date.date,
-		if(application_form.status = 2, application_form.contact_start_date, application_form.timezone) as lecture_time,
-		CASE WHEN (application_form.status = 2) THEN "완료"
-			WHEN (application_form.status = 1) THEN "진행중"
-		   	WHEN (application_form.status = 0) THEN "진행예정"
-		    WHEN (application_form.status = -1) THEN "취소" END AS result
-		FROM application_form, instructor_info, lecture, lecture_date, (SELECT @rownum:=0) TMP
-		WHERE application_form.lecture_id = lecture.id
-			AND application_form.lecture_date_id = lecture_date.id
+		SELECT @rownum:=@rownum+1 AS number, if(applicationform.church_id = 0, (SELECT churchtemp.name FROM churchtemp WHERE churchtemp.application_form_id = applicationform.id), (SELECT church.name FROM church WHERE church.id = applicationform.church_id)) AS church_name,
+			if(applicationform.church_id = 0, "", (SELECT church.denomination FROM church WHERE church.id = applicationform.church_id)) AS denomination,
+		    if(applicationform.church_id = 0, (SELECT churchtemp.city FROM churchtemp WHERE churchtemp.application_form_id = applicationform.id), (SELECT church.city FROM church WHERE church.id = applicationform.church_id)) AS city,
+		    instructor_info.name, applicationform.reg_date, lecture_date.date,
+		if(applicationform.status = 2, applicationform.contact_start_date, applicationform.timezone) as lecture_time,
+		CASE WHEN (applicationform.status = 2) THEN "완료"
+			WHEN (applicationform.status = 1) THEN "진행중"
+		   	WHEN (applicationform.status = 0) THEN "진행예정"
+		    WHEN (applicationform.status = -1) THEN "취소" END AS result
+		FROM applicationform, instructor_info, lecture, lecture_date, (SELECT @rownum:=0) TMP
+		WHERE applicationform.lecture_id = lecture.id
+			AND applicationform.lecture_date_id = lecture_date.id
 		    AND lecture.instructor_id = instructor_info.id
 	</select>
 </mapper>
