@@ -1,5 +1,6 @@
 package edu.handong.walab.model.dto;
 
+import java.sql.Time;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -20,9 +21,9 @@ public class ApplicationWithFeedback {
 	int position_id;
 	String position_name;
 	@JsonFormat(pattern = "HH:mm") 
-	Date contact_start_date;
+	Time contact_start_date;
 	@JsonFormat(pattern = "HH:mm") 
-	Date contact_end_date;
+	Time contact_end_date;
 	@JsonFormat(pattern = "yyyy-MM-dd") 
 	Date reg_date;
 	@JsonFormat(pattern = "yyyy-MM-dd") 
@@ -115,16 +116,16 @@ public class ApplicationWithFeedback {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public Date getContact_start_date() {
+	public Time getContact_start_date() {
 		return contact_start_date;
 	}
-	public void setContact_start_date(Date contact_start_date) {
+	public void setContact_start_date(Time contact_start_date) {
 		this.contact_start_date = contact_start_date;
 	}
-	public Date getContact_end_date() {
+	public Time getContact_end_date() {
 		return contact_end_date;
 	}
-	public void setContact_end_date(Date contact_end_date) {
+	public void setContact_end_date(Time contact_end_date) {
 		this.contact_end_date = contact_end_date;
 	}
 	public Date getReg_date() {
