@@ -134,7 +134,7 @@
 	    LEFT JOIN feedbacks ON feedbacks.application_form_id = user_lecture.id
    	</select>
 
-   	<select id="readApplicationForfeedbacks" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
+   	<select id="readApplicationForFeedback" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
 	   	SELECT  user_lecture.id, lecture_name, user_lecture.contact_start_date, user_lecture.contact_end_date, user_lecture.user_id, user_lecture.lecture_id, user_lecture.lecture_date_id, user_lecture.church_id, user_lecture.memo, user_lecture.admin_name, user_lecture.admin_phone, user_lecture.admin_email, user_lecture.attendee_number, user_lecture.attendee_target, user_lecture.status, user_lecture.timezone,
 	  			user_lecture.reg_date,
 
@@ -161,7 +161,7 @@
 	    LEFT JOIN feedbacks ON feedbacks.application_form_id = user_lecture.id
    	</select>
 
-   	<select id="readContactedApplicationForfeedbacks" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
+   	<select id="readContactedApplicationForFeedback" resultType="edu.handong.walab.model.dto.ApplicationWithFeedback" parameterType="hashmap">
    		SELECT  user_lecture.id, lecture_name, user_lecture.contact_start_date, user_lecture.contact_end_date, user_lecture.user_id, user_lecture.lecture_id, user_lecture.lecture_date_id, user_lecture.church_id, user_lecture.memo, user_lecture.admin_name, user_lecture.admin_phone, user_lecture.admin_email, user_lecture.attendee_number, user_lecture.attendee_target, user_lecture.status, user_lecture.timezone,
 	  			user_lecture.reg_date,
 
