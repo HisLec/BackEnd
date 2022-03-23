@@ -183,7 +183,7 @@
 		</if>) AS lecture
 
 	LEFT JOIN (SELECT AF.id as form_id, AF.lecture_id, AF.lecture_date_id, AF.contact_start_date, AF.contact_end_date, AF.status, AF.admin_name, if(AF.church_id != 0, (select church.name as church_name from church where church.id = AF.church_id), (select churchtemp.name as church_name from churchtemp
-    	where churchtemp.application_form_id = AF.id))as church_name
+    	where churchtemp.applicationform_id = AF.id))as church_name
 		FROM applicationform AS AF) AS form
 	ON form.lecture_date_id = lecture.date_id AND form.lecture_id = lecture.id
 
@@ -209,7 +209,7 @@
 		</if>) AS lecture
 
 	LEFT JOIN (SELECT AF.id as form_id, AF.lecture_id, AF.lecture_date_id, AF.contact_start_date, AF.contact_end_date, AF.status, AF.admin_name, if(AF.church_id != 0, (select church.name as church_name from church where church.id = AF.church_id), (select churchtemp.name as church_name from churchtemp
-    	where churchtemp.application_form_id = AF.id))as church_name
+    	where churchtemp.applicationform_id = AF.id))as church_name
 		FROM applicationform AS AF) AS form
 	ON form.lecture_date_id = lecture.date_id AND form.lecture_id = lecture.id
 

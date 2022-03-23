@@ -40,7 +40,7 @@
   	</delete>
   	<delete id="deleteByChange" parameterType="hashmap">
    		DELETE FROM lecture_date
-		WHERE id NOT IN (SELECT lecture_date_id FROM application_form
+		WHERE id NOT IN (SELECT lecture_date_id FROM applicationform
 		   				 WHERE lecture_id = #{lecture_id} AND status != -1)
 		      AND lecture_id = #{lecture_id}
   	</delete>
