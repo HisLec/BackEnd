@@ -53,14 +53,18 @@ public class SimpleApplicationController {
 	public String createApplication(HttpServletRequest httpServletRequest) {
 		int user_id = Integer.parseInt(httpServletRequest.getParameter("user_id").toString()); // section값
 		int manageID = Integer.parseInt(httpServletRequest.getParameter("manageID").toString());
-		InstructorInfo inst = instructorInfoservice.readInstructorInfoByUserId(manageID);
 		
+		InstructorInfo inst = instructorInfoservice.readInstructorInfoByUserId(manageID);
+		System.out.println("====================");
 		int church_id = Integer.parseInt(httpServletRequest.getParameter("church_id").toString());
+		System.out.println("====================");
 		if(church_id != 0) {
 			Church church = churchService.readChurchById(church_id);
+			System.out.println("====================");
 			if(!church.getZip_code().equals(httpServletRequest.getParameter("zip_code").toString()) || !church.getAddr1().equals(httpServletRequest.getParameter("addr1").toString()) || !church.getAddr2().equals(httpServletRequest.getParameter("addr2").toString())
 					|| !church.getPastor().equals(httpServletRequest.getParameter("pastor").toString()) || !church.getEmail().equals(httpServletRequest.getParameter("email").toString()) || !church.getPhone().equals(httpServletRequest.getParameter("phone").toString())) {
 				church_id = 0;
+				System.out.println("====================");
 			}
 		}
 		
@@ -77,9 +81,9 @@ public class SimpleApplicationController {
 					Integer.parseInt(httpServletRequest.getParameter("attendee_number").toString()),
 					httpServletRequest.getParameter("attendee_target").toString(),
 					httpServletRequest.getParameter("timezone").toString());
-			
-			applicationService.writeEmail(httpServletRequest.getParameter("inst_email").toString(), httpServletRequest.getParameter("date").toString(), httpServletRequest.getParameter("lecture_name").toString(), httpServletRequest.getParameter("church_name").toString(), httpServletRequest.getParameter("link").toString());
-			
+			System.out.println("=======Before Email");
+//			applicationService.writeEmail(httpServletRequest.getParameter("inst_email").toString(), httpServletRequest.getParameter("date").toString(), httpServletRequest.getParameter("lecture_name").toString(), httpServletRequest.getParameter("church_name").toString(), httpServletRequest.getParameter("link").toString());
+			System.out.println("=======After Email");
 			int application_form_id = applicationService.getLastId();
 	
 			if(church_id == 0)

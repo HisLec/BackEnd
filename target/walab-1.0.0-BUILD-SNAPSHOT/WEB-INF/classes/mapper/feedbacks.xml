@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="feedbacks">
+
+	<select id="readFeedbackByTopic" resultType="edu.handong.walab.model.dto.FeedbackByLecture" parameterType="hashmap">
+   		SELECT feedbacks.id, applicationform_id, lecture_star, instructor_star, content, feedbacks.reg_date, feedbacks.lecture_id, topic_list, instructor_id FROM
+		(SELECT F.id, F.applicationform_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id AS lecture_id
+		FROM feedbacks AS F, applicationform AS A
+		WHERE F.applicationform_id = A.id) AS feedbacks
+		LEFT JOIN (SELECT lecture_id, GROUP_CONCAT(topic.name SEPARATOR ', ') as topic_list
+		from lecture_topic join topic on lecture_topic.topic_id = topic.id 
+		<if test="topic_id != null">
+			where topic.id IN
+			<foreach collection = 'topic_id' index='index' item = 'topic' open="(" close=")" separator=",">
+	   		#{topic}
+	   		</foreach>
+		</if>
+		GROUP BY lecture_id) as topic_info
+		on feedbacks.lecture_id = topic_info.lecture_id
+   	</select>
+   	
+   	<select id="readFeedbackByInstructor" resultType="edu.handong.walab.model.dto.FeedbackByLecture" parameterType="hashmap">
+   		SELECT feedbacks.id, applicationform_id, lecture_star, instructor_star, content, feedbacks.reg_date, feedbacks.lecture_id, topic_list, instructor_id FROM 
+		(SELECT F.id, F.applicationform_id, F.lecture_star, F.instructor_star, F.content, F.reg_date, A.lecture_id AS lecture_id
+		FROM feedbacks AS F, applicationform AS A
+		WHERE F.applicationform_id = A.id) AS feedbacks
+			LEFT JOIN (SELECT lecture_id, GROUP_CONCAT(topic.name SEPARATOR ', ') as topic_list
+				from lecture_topic join topic on lecture_topic.topic_id = topic.id GROUP BY lecture_id) as topic_info
+				on feedbacks.lecture_id = topic_info.lecture_id
+            JOIN lecture ON feedbacks.lecture_id = lecture.id
+        WHERE instructor_id = #{instructor_id}
+   	</select>
+</mapper>

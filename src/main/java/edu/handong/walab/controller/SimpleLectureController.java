@@ -5,6 +5,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -228,7 +230,7 @@ public class SimpleLectureController {
 		lectureService.recoverLecture(Integer.parseInt(param.get("id").toString()));
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.PUT, produces = "application/json; charset=utf8")
+	@RequestMapping(value = "update", method = RequestMethod.PUT, produces = "application/json; charset=utf8")
 	@ResponseBody
 	public void updateAcademyDate(@RequestBody Map<String,Object> param) throws JsonProcessingException {
 		String id = param.get("id").toString();
@@ -246,14 +248,29 @@ public class SimpleLectureController {
 		String afternoon = param.get("afternoon").toString();
 		String day_week = param.get("day_week").toString();
 		Object regionInfo = param.get("regionInfo");
+		System.out.println("지역!!!: "+regionInfo.toString());
 		Object topicInfo = param.get("topicInfo");
 		Object dateInfo = param.get("dateInfo");
 		ObjectMapper mapper = new ObjectMapper();
 
 		String regionJSON = mapper.writeValueAsString(regionInfo);
+		
 		String topicJSON = mapper.writeValueAsString(topicInfo);
 		String dateJSON = mapper.writeValueAsString(dateInfo);
 		List<Map<String, Object>> regionMap = mapper.readValue(regionJSON, new TypeReference<List<Map<String, Object>>>(){});
+		int check = Integer.parseInt(regionMap.get(0).get("id").toString());
+
+		if(check == 0) {
+			List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", "0");
+			map.put("name", "전국");
+			map.put("status", "1");
+			listMap.add(map);
+			regionMap = listMap;
+		}
+		
+		
 		List<Map<String, Object>> topicMap = mapper.readValue(topicJSON, new TypeReference<List<Map<String, Object>>>(){});
 		List<Map<String, Object>> dateMap = mapper.readValue(dateJSON, new TypeReference<List<Map<String, Object>>>(){});
 		

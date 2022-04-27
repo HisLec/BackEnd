@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="instructorInfo">
+   	<select id="read" resultType="edu.handong.walab.model.domain.InstructorInfo" parameterType="hashmap">
+		SELECT I.id, I.user_id, I.position_id, I.name, I.phone, I.image, I.intro, I.memo, U.email, I.reg_date, I.del_date, P.name AS position_name 
+		FROM instructor_info AS I, user AS U, position AS P
+		WHERE I.user_id = U.id
+	        AND P.id = I.position_id
+			AND I.user_id = #{user_id}
+   	</select>
+   	
+	<select id="readByInstructorId" resultType="edu.handong.walab.model.domain.InstructorInfo" parameterType="hashmap">
+		SELECT instructor_info.id, instructor_info.user_id, instructor_info.name, instructor_info.phone, instructor_info.image, instructor_info.intro, instructor_info.memo, instructor_info.reg_date, position.name as position_name FROM instructor_info, user, position
+		WHERE instructor_info.user_id = user.id
+			AND instructor_info.id = #{instructor_id}
+            AND instructor_info.position_id = position.id
+            AND instructor_info.del_date IS NULL
+   	</select>
+   	
+   	<select id="readByUserId" resultType="edu.handong.walab.model.domain.InstructorInfo" parameterType="hashmap">
+		SELECT * FROM instructor_info
+		WHERE user_id = #{user_id}
+			AND del_date IS NULL
+   	</select>
+   	
+   	<select id="readInstructorById" resultType="edu.handong.walab.model.domain.InstructorInfo" parameterType="hashmap">
+		SELECT * FROM instructor_info
+		WHERE id = #{id}
+			AND del_date IS NULL
+   	</select>
+   	
+   	
+   	<select id="readByEmail" resultType="edu.handong.walab.model.domain.InstructorInfo" parameterType="hashmap">
+		SELECT * FROM instructor_info, user
+		WHERE instructor_info.user_id = user.id
+			AND user.email=#{email}
+			AND instructor_info.del_date IS NULL
+   	</select>
+   	
+   	
+   	<select id="readInstructors" resultType="edu.handong.walab.model.dto.AdminInstructor" parameterType="hashmap">
+	   	SELECT inst.id, inst.user_id, inst.position_id, inst.name AS inst_name, inst.phone, inst.image, inst.intro, inst.memo, inst.reg_date, inst.del_date, p.name AS position_name, u.email, u.status
+		FROM instructor_info AS inst, position AS p, user AS u
+		WHERE inst.position_id = p.id AND inst.user_id = u.id
+		<if test = "keyword != null">
+		AND (inst.name like #{keyword} OR
+        inst.phone like #{keyword} OR inst.intro like #{keyword} OR
+        inst.memo like #{keyword} OR p.name like #{keyword} OR u.email like #{keyword})
+		</if>
+		ORDER BY p.name, inst.name
+   	</select>
+
+   	<select id="readAllInstructors" resultType="edu.handong.walab.model.dto.AdminInstructor" parameterType="hashmap">
+   		SELECT inst.id, inst.user_id, inst.position_id, inst.name AS inst_name, inst.phone, inst.image, inst.intro, inst.memo, inst.reg_date, inst.del_date, p.name AS position_name, u.email, u.status
+		FROM instructor_info AS inst, position AS p, user AS u
+		WHERE inst.position_id = p.id AND inst.user_id = u.id AND inst.del_date IS NULL
+		ORDER BY p.name, inst.name
+   	</select>
+
+   	<select id="readPositionID" resultType="Integer" parameterType="hashmap">
+   	SELECT id FROM position
+   	WHERE name=#{name}
+   	</select>
+   	<select id="readPosition" resultType="edu.handong.walab.model.domain.Position">
+   	SELECT * FROM position
+   	</select>
+
+   	<update id="update" parameterType="hashmap">
+		UPDATE instructor_info
+		SET position_id = #{position_id}, name = #{name}, phone = #{phone}, image = #{image}, intro=#{intro}, memo = #{memo}
+		WHERE id=#{id}
+	</update>
+	
+	<insert id="createInstructor" parameterType="hashmap">
+		INSERT INTO instructor_info (user_id, position_id, name, phone, image, intro, memo)
+		VALUES (#{user_id}, #{position_id}, #{name}, #{phone}, #{image}, #{intro}, #{memo})
+	</insert>
+
+	<update id="delete" parameterType="hashmap">
+		UPDATE instructor_info SET del_date=NOW()
+		WHERE id=#{instructor_id}
+	</update>
+	
+	<select id="StatByInstPosition" parameterType="hashmap" resultType="edu.handong.walab.model.dto.StatByInstPosition">
+   	SELECT position.name AS position_name, COUNT(*) AS position_count FROM instructor_info, position
+	WHERE instructor_info.position_id = position.id
+	<if test="period != null">
+        AND instructor_info.reg_date >= date_add(now(), interval #{period} month)
+    </if>
+	GROUP BY position.name
+   	</select>
+</mapper>
