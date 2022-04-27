@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+	<context:annotation-config/>
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="edu.handong.walab" />
+	
+	<beans:bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <beans:property name="location" value="/WEB-INF/config/config.properties"/>
+        <beans:property name="fileEncoding" value="UTF-8" />
+    </beans:bean>
+
+	<beans:bean id = "dataSource"  class="org.apache.commons.dbcp.BasicDataSource">
+		<beans:property name = "driverClassName" value="${spring.datasource.driverClassName}"/>
+		<beans:property name="url" value="${spring.datasource.url}"/>
+		<beans:property name = "username" value="${spring.datasource.username}"/>
+		<beans:property name = "password" value="${spring.datasource.password}"/>
+	</beans:bean>
+	
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
+		<beans:property name="mapperLocations" value="classpath*:mapper/**/*.xml"/>   
+		<beans:property name="dataSource" ref="dataSource"/>  
+	</beans:bean>    
+	
+	<beans:bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" ref="sqlSessionFactory"/>
+	</beans:bean>
+	
+	<beans:beans>
+	    <beans:bean id="multipartResolver"
+	        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	        <beans:property name="maxUploadSize" value="104857600"/>
+	    </beans:bean>
+	    <!-- Declare explicitly, or use <context:annotation-config/> -->
+	    <beans:bean id="simpleVisitingLogController" class="edu.handong.walab.controller.SimpleVisitingLogController"/>
+	    
+	    <beans:bean id="commonInterceptor" class="edu.handong.walab.Interceptor.CommonInterceptor"/>
+	    <beans:bean id="commonUserInterceptor" class="edu.handong.walab.Interceptor.CommonUserInterceptor"/>
+	    <beans:bean id="commonInstInterceptor" class="edu.handong.walab.Interceptor.CommonInstInterceptor"/>
+	    <beans:bean id="commonAdminInterceptor" class="edu.handong.walab.Interceptor.CommonAdminInterceptor"/>
+	    
+	    <interceptors>
+			<interceptor>
+				<mapping path="/application/status"/>
+				<mapping path="/visiting_log/feedback/**"/>
+				<mapping path="/application/complete"/>
+				<mapping path="/application"/>
+				<exclude-mapping path="/resources/**"/>
+				<exclude-mapping path="/img/**"/>
+				<beans:ref bean="commonUserInterceptor"/>
+			</interceptor>
+			
+			<interceptor>
+				<mapping path="/lecture/delete"/>
+				<mapping path="/lecture"/>
+				<mapping path="/lecture/instructor/**"/>
+				<mapping path="/visiting_log"/>
+				<mapping path="/visiting_log/application_form/**"/>
+				<mapping path="/instructor/update"/>
+				<exclude-mapping path="/resources/**"/>
+				<exclude-mapping path="/img/**"/>
+				<beans:ref bean="commonInstInterceptor"/>
+			</interceptor>
+			
+			<interceptor>
+				<mapping path="/**/"/>
+				<exclude-mapping path="/application/status"/>
+				<exclude-mapping path="/visiting_log/feedback/**"/>
+				<exclude-mapping path="/application/complete"/>
+				<exclude-mapping path="/application"/>
+				<exclude-mapping path="/lecture/delete"/>
+				<exclude-mapping path="/lecture"/>
+				<exclude-mapping path="/lecture/instructor/**"/>
+				<exclude-mapping path="/visiting_log"/>
+				<exclude-mapping path="/visiting_log/application_form/**"/>
+				<exclude-mapping path="/instructor/update"/>
+				<exclude-mapping path="/resources/**"/>
+				<exclude-mapping path="/user/login"/>
+				<exclude-mapping path="/user/logout"/>
+				<exclude-mapping path="/img/**"/>
+				<beans:ref bean="commonAdminInterceptor"/>
+			</interceptor>
+		</interceptors>
+	</beans:beans>
+	
+	
+	
+</beans:beans>

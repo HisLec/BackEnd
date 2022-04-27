@@ -228,7 +228,7 @@ public class SimpleLectureController {
 		lectureService.recoverLecture(Integer.parseInt(param.get("id").toString()));
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.PUT, produces = "application/json; charset=utf8")
+	@RequestMapping(value = "update", method = RequestMethod.PUT, produces = "application/json; charset=utf8")
 	@ResponseBody
 	public void updateAcademyDate(@RequestBody Map<String,Object> param) throws JsonProcessingException {
 		String id = param.get("id").toString();
