@@ -49,7 +49,7 @@
         inst.memo like #{keyword} OR p.name like #{keyword} OR u.email like #{keyword})
 		</if>
 		ORDER BY p.name, inst.name
-   	</select>
+   	</select>	  	
 
    	<select id="readAllInstructors" resultType="edu.handong.walab.model.dto.AdminInstructor" parameterType="hashmap">
    		SELECT inst.id, inst.user_id, inst.position_id, inst.name AS inst_name, inst.phone, inst.image, inst.intro, inst.memo, inst.reg_date, inst.del_date, p.name AS position_name, u.email, u.status
