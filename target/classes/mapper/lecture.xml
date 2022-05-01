@@ -73,6 +73,7 @@
 	        OR region_info.region_list like #{keyword}
 	        OR intro like #{keyword}
         </if>
+       	order by instructor_name
 
    	</select>
 

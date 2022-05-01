@@ -37,5 +37,6 @@ public interface InstructorInfoDAO {
 	InstructorInfo readByEmail(String email);
 
 	InstructorInfo readInstructorById(int id);
+	
 
 }
