@@ -23,10 +23,14 @@ public class SimpleLectureDAO implements LectureDAO{
 	
 	@Override
 	public List<LectureForUser> getLectureBySubject(int[] subject) {
-		Map<String, Object> param = new HashMap<String, Object>();
-	    param.put("topic_id", subject);
+		if(subject[0] == -1) return sqlSession.selectList(namespace+".readLectureForUser");
+		else {
+			Map<String, Object> param = new HashMap<String, Object>();
+		    param.put("topic_id", subject);
 
-		return sqlSession.selectList(namespace+".readLectureForUserBySubject", param);
+			return sqlSession.selectList(namespace+".readLectureForUserBySubject", param);
+
+		}
 	}
 	
 	@Override

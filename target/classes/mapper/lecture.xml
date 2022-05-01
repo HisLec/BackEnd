@@ -9,7 +9,7 @@
    		(select user.email from user where instructor_info.user_id = user.id) as instructor_email,
    		(select position.name from position where instructor_info.position_id = position.id) as instructor_position,
    		lecture.name as name, lecture.intro, sample_url, region_info.region_list as region,
-   		
+        
    		IF(start_date is null, "",
    		IF(day_week = "", CONCAT(start_date, " ~ ", end_date), CONCAT(start_date, " ~ ", end_date, 
 		IF(day_week = "일,월,화,수,목,금,토", "(매일",CONCAT(" (매주 ",day_week)) 
@@ -237,6 +237,37 @@
    		(#{lecture_id}, #{date})
    		</foreach>
    	</insert>
+   	
+   		<select id="readLectureForUser" resultType="edu.handong.walab.model.dto.LectureForUser">
+   		SELECT lecture.id as id, instructor_info.name as instructor_name, instructor_info.intro as instructor_intro,
+        instructor_info.memo as instructor_memo, instructor_info.image as instructor_image,
+   		(select user.email from user where instructor_info.user_id = user.id) as instructor_email,
+   		(select position.name from position where instructor_info.position_id = position.id) as instructor_position,
+   		lecture.name as name, lecture.intro, sample_url, region_info.region_list as region,
+		
+		IF(start_date is null, "",
+   		IF(day_week = "", CONCAT(start_date, " ~ ", end_date), CONCAT(start_date, " ~ ", end_date, 
+		IF(day_week = "일,월,화,수,목,금,토", "(매일",CONCAT(" (매주 ",day_week)) 
+		, ")"))) as date,
+		
+   		lecture.morning, lecture.afternoon, lecture.evening,
+   		lecture.reg_date as reg_date
+   		from lecture
+        
+		join (SELECT lecture_id, GROUP_CONCAT(topic.name ORDER BY topic.priority, topic.name SEPARATOR ', ') as topic_list from lecture_topic join topic on lecture_topic.topic_id = topic.id
+
+		GROUP BY lecture_id) as topic_info
+		on lecture.id = topic_info.lecture_id
+        
+		left join (SELECT lecture_id, GROUP_CONCAT(region.name ORDER BY region.id SEPARATOR ', ') as region_list
+		from lecture_region join region on lecture_region.region_id = region.id GROUP BY lecture_id) as region_info
+		on lecture.id = region_info.lecture_id
+        
+        join instructor_info
+        ON instructor_info.id = lecture.instructor_id
+        
+		where lecture.del_date is null and instructor_info.del_date is null
+   	</select>
 
    	<select id="readLectureForUserBySubject" resultType="edu.handong.walab.model.dto.LectureForUser" parameterType="hashmap">
    		SELECT lecture.id as id, instructor_info.name as instructor_name, instructor_info.intro as instructor_intro,

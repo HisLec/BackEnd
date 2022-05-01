@@ -99,7 +99,6 @@ public class SimpleLectureController {
 	@RequestMapping(value = "subject", method = RequestMethod.GET, produces = "application/json; charset=utf8")
 	@ResponseBody
 	public String getLectureBySubject(HttpServletRequest httpServletRequest) throws IOException, ParseException {
-		System.out.println("in subject");
 		String subjectAll = httpServletRequest.getParameter("subject");
 		String[] subject;
 		if(subjectAll != null)
@@ -107,7 +106,6 @@ public class SimpleLectureController {
 		else {
 			subject = null;
 		}
-		System.out.println("in subject end");
 		return lectureService.getLectureJsonDataBySubject(subject);
 	}
 

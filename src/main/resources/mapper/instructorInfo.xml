@@ -8,6 +8,7 @@
 		WHERE I.user_id = U.id
 	        AND P.id = I.position_id
 			AND I.user_id = #{user_id}
+		order by I.id desc;
    	</select>
    	
 	<select id="readByInstructorId" resultType="edu.handong.walab.model.domain.InstructorInfo" parameterType="hashmap">
@@ -16,18 +17,21 @@
 			AND instructor_info.id = #{instructor_id}
             AND instructor_info.position_id = position.id
             AND instructor_info.del_date IS NULL
+        order by instructor_info.id desc;
    	</select>
    	
    	<select id="readByUserId" resultType="edu.handong.walab.model.domain.InstructorInfo" parameterType="hashmap">
 		SELECT * FROM instructor_info
 		WHERE user_id = #{user_id}
 			AND del_date IS NULL
+		order by instructor_info.id desc;
    	</select>
    	
    	<select id="readInstructorById" resultType="edu.handong.walab.model.domain.InstructorInfo" parameterType="hashmap">
 		SELECT * FROM instructor_info
 		WHERE id = #{id}
 			AND del_date IS NULL
+		order by instructor_info.id desc;
    	</select>
    	
    	
@@ -36,6 +40,7 @@
 		WHERE instructor_info.user_id = user.id
 			AND user.email=#{email}
 			AND instructor_info.del_date IS NULL
+		order by instructor_info.id desc;
    	</select>
    	
    	
@@ -52,10 +57,11 @@
    	</select>
 
    	<select id="readAllInstructors" resultType="edu.handong.walab.model.dto.AdminInstructor" parameterType="hashmap">
-   		SELECT inst.id, inst.user_id, inst.position_id, inst.name AS inst_name, inst.phone, inst.image, inst.intro, inst.memo, inst.reg_date, inst.del_date, p.name AS position_name, u.email, u.status
+   		SELECT inst.id, inst.name AS inst_name
 		FROM instructor_info AS inst, position AS p, user AS u
 		WHERE inst.position_id = p.id AND inst.user_id = u.id AND inst.del_date IS NULL
-		ORDER BY p.name, inst.name
+		ORDER BY p.id desc, inst.name;
+		
    	</select>
 
    	<select id="readPositionID" resultType="Integer" parameterType="hashmap">
