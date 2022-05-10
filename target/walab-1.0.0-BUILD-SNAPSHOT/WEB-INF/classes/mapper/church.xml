@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="church">
+	<insert id="createChurch" parameterType="hashmap" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO church (administrator_id_create, administrator_id_update, name, region_id, nation, city, district, zip_code, addr1, addr2, phone, email, page_url, fax, size, denomination, pastor, admin_name, hgu_yn, hgu_memo, writer_name, memo)
+		VALUES (#{administrator_id_create}, #{administrator_id_update}, #{name}, #{region_id}, #{nation}, #{city}, #{district}, #{zip_code}, #{addr1}, #{addr2}, #{phone}, #{email}, #{page_url}, #{fax}, #{size}, #{denomination}, #{pastor}, #{admin_name}, #{hgu_yn}, #{hgu_memo}, #{writer_name}, #{memo})
+	</insert>
+	<select id="readChurch" resultType="edu.handong.walab.model.domain.Church">
+		SELECT *,
+		(SELECT a.name FROM church AS c, administrator_info AS a where c.administrator_id_create = a.id AND c.id = church.id) AS creater_name,
+		(SELECT a.name FROM church AS c, administrator_info AS a where church.administrator_id_update = a.id AND c.id = church.id) AS updater_name
+		FROM church
+		<if test = "keyword != null">
+			WHERE (name like #{keyword} OR city like #{keyword} OR addr1 like #{keyword}
+			OR addr2 like #{keyword} OR phone like #{keyword} OR email like #{keyword}
+			OR hgu_yn like #{keyword} OR hgu_memo like #{keyword} OR writer_name like #{keyword} 
+			OR memo like #{keyword} OR pastor like #{keyword} OR denomination like #{keyword} 
+			OR admin_name like #{keyword})
+		</if>
+	</select>
+	<select id="getLastId" resultType="Integer">
+		SELECT id FROM church ORDER BY id DESC LIMIT 1
+	</select>
+	<select id="readChurchById" resultType="edu.handong.walab.model.domain.Church" parameterType="hashmap">
+		SELECT * FROM church WHERE id=#{id}
+	</select>
+	<update id="updateChurchAddr" parameterType="hashmap">
+		UPDATE church SET administrator_id_update=#{administrator_id_update}, name=#{name}, region_id=#{region_id}, city=#{city}, district=#{district}, zip_code=#{zip_code}, addr1=#{addr1}, addr2=#{addr2}, pastor=#{pastor}, email=#{email}, phone=#{phone}, update_date=now(), confirm_date=now()
+		WHERE id = #{id}
+	</update>
+	<update id="updateChurch" parameterType="hashmap">
+		UPDATE church SET administrator_id_update=#{administrator_id_update}, name=#{name}, region_id=#{region_id}, nation=#{nation}, city=#{city}, district=#{district}, zip_code=#{zip_code}, addr1=#{addr1}, addr2=#{addr2}, phone=#{phone}, email=#{email}, page_url=#{page_url}, fax=#{fax}, size=#{size}, denomination=#{denomination}, pastor=#{pastor}, admin_name=#{admin_name}, hgu_yn=#{hgu_yn}, hgu_memo=#{hgu_memo}, writer_name=#{writer_name}, memo=#{memo}, update_date=now(), confirm_date=now()
+		WHERE id = #{church_id}
+	</update>
+	<update id="deleteChurch" parameterType="hashmap">
+		UPDATE church SET del_date = DATE_FORMAT(now(), "%Y-%m-%d %H:%I:%s")
+		WHERE id = #{church_id}
+	</update>
+	<update id="recoverChurch" parameterType="hashmap">
+		UPDATE church SET del_date = null
+		WHERE id = #{church_id}
+	</update>
+</mapper>

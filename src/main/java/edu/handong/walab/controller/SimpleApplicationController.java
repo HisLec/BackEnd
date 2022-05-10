@@ -162,6 +162,7 @@ public class SimpleApplicationController {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		String result = applicationService.readAllApplicationForVisitingLog(keyword);
 
 		return applicationService.readAllApplicationForVisitingLog(keyword);
 	}
@@ -176,7 +177,8 @@ public class SimpleApplicationController {
 	@RequestMapping(value = "user/{user_id}/contacted", method = RequestMethod.GET, produces = "application/json; charset=utf8")
 	@ResponseBody
 	public String readApplicationByUserContacted(@PathVariable int user_id, HttpServletRequest httpServletRequest) {
-
+		String result = applicationService.readContactedApplicationForFeedback(user_id);
+		
 		return applicationService.readContactedApplicationForFeedback(user_id);
 	}
 

@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -128,12 +129,16 @@ public class SimpleVisitingLogController {
 	public String writeFeedback(@PathVariable int application_form_id, @RequestParam("file") List<MultipartFile> file, 
 			@RequestParam("content") String content, @RequestParam("lecture_rating") int lectureRating, @RequestParam("instructor_rating") int instructorRating, @RequestParam("manageID") int manageID,
 			HttpServletRequest request) throws ParseException {
-		
+		System.out.println("=============================================");
+		HashMap<String,Integer> param = new HashMap<>();
+//		param.put("", null)
+		System.out.println(manageID);
 		// manageID가 작성한 신청서가 맞는지
 		int isApplication = applicationService.readByUserID(manageID).getId();
+		System.out.println(isApplication);
+		
 		if(isApplication == application_form_id) {
 			List<String> fileData = new ArrayList<String>();
-			
 			Calendar calendar = Calendar.getInstance();
 			String filePath = request.getSession().getServletContext().getRealPath("/") + "resources/upload/"+calendar.get(calendar.YEAR)+"/"+(calendar.get(calendar.MONTH)+1)+"/"; //파일 저장 경로, 설정파일로 따로 관리한다.
 		    File dir = new File(filePath); //파일 저장 경로 확인, 없으면 만든다.
@@ -160,6 +165,7 @@ public class SimpleVisitingLogController {
 		            e.printStackTrace();
 				}
 		    }
+		    
 			
 			return vistingLogService.writeFeedbackLog(application_form_id, content, lectureRating, instructorRating, fileData);
 		}
