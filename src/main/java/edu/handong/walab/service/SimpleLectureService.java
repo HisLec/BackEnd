@@ -184,6 +184,21 @@ public class SimpleLectureService implements LectureService{
 
 		return jsonString;
 	}
+	
+	
+	
+	@Override
+	public String getLectureTopicJsonDataBySubject() throws JsonProcessingException {
+		List<LectureForUser> lectureDATA;
+		
+		
+		lectureDATA =  lectureDAO.getLectureTopicBySubject();
+	
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonString = mapper.writeValueAsString(lectureDATA);
+
+		return jsonString;
+	}
 
 	@Override
 	public String getLectureJsonDataByInstructor(int instructorId) throws JsonProcessingException {

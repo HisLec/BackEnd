@@ -276,6 +276,7 @@
    		(select user.email from user where instructor_info.user_id = user.id) as instructor_email,
    		(select position.name from position where instructor_info.position_id = position.id) as instructor_position,
    		lecture.name as name, lecture.intro, sample_url, region_info.region_list as region,
+   	
 		
 		IF(start_date is null, "",
    		IF(day_week = "", CONCAT(start_date, " ~ ", end_date), CONCAT(start_date, " ~ ", end_date, 
@@ -306,6 +307,15 @@
         
 		where lecture.del_date is null and instructor_info.del_date is null
    	</select>
+   	
+   	   	<select id="readLectureTopicForUserBySubject" resultType="edu.handong.walab.model.dto.LectureForUser" >
+   	   		select topic.name as topic_name
+			from topic left join lecture_topic  on topic.id = lecture_topic.topic_id
+			left join lecture  on lecture_topic.lecture_id = lecture.id
+			where topic.disable = 0 AND topic.id = lecture_topic.topic_id AND lecture_topic.lecture_id = lecture.id AND lecture.del_date is null
+			group by lecture_id 
+   	   	</select>
+   	
 
    	<select id="readLectureForUserByInstructor" resultType="edu.handong.walab.model.dto.LectureForUser" parameterType="hashmap">
    		SELECT lecture.id as id,
