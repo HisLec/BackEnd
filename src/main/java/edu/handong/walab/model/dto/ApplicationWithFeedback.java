@@ -44,12 +44,20 @@ public class ApplicationWithFeedback {
 	String sample_url;
 	String timezone;
 	String inst_name;
+	String inst_phone;
 	String visit_log;
 	int feedback_id;
 	int lecture_star;
 	int instructor_star;
 	Date visit_reg_date;
 	
+	
+	public String getInst_phone() {
+		return inst_phone;
+	}
+	public void setInst_phone(String inst_phone) {
+		this.inst_phone = inst_phone;
+	}
 	public int getId() {
 		return id;
 	}
