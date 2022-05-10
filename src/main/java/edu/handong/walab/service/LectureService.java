@@ -15,6 +15,8 @@ public interface LectureService {
 	public String getAllLectureJsonData() throws JsonProcessingException;
 	
 	public String getLectureJsonDataBySubject(String[] subject) throws JsonProcessingException;
+	
+	public String getLectureTopicJsonDataBySubject() throws JsonProcessingException;
 
 	public String getLectureJsonDataByInstructor(int instructorId) throws JsonProcessingException;
 

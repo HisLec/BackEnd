@@ -108,6 +108,13 @@ public class SimpleLectureController {
 		}
 		return lectureService.getLectureJsonDataBySubject(subject);
 	}
+	
+	@RequestMapping(value = "topic", method = RequestMethod.GET, produces = "application/json; charset=utf8")
+	@ResponseBody
+	public String getLectureTopicBySubject(HttpServletRequest httpServletRequest) throws IOException, ParseException {
+		return lectureService.getLectureTopicJsonDataBySubject();
+	}
+
 
 	@RequestMapping(value = "instructor/{userId}", method = RequestMethod.GET, produces = "application/json; charset=utf8")
 	@ResponseBody

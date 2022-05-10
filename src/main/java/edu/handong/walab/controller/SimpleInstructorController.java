@@ -92,7 +92,7 @@ public class SimpleInstructorController {
 	            e.printStackTrace();
 			}
 	    }
-		return instructorInfoService.createInstructor(
+	    String result = instructorInfoService.createInstructor(
 			httpServletRequest.getParameter("email").toString(),
 			Integer.parseInt(httpServletRequest.getParameter("position_id").toString()),
 			httpServletRequest.getParameter("name").toString(),
@@ -100,6 +100,9 @@ public class SimpleInstructorController {
 			path,
 			httpServletRequest.getParameter("intro").toString(),
 			httpServletRequest.getParameter("memo").toString());
+	    System.out.println("&&&&&&&");
+	    System.out.println(result);
+	    return result;
 	}
 	
 	@RequestMapping(value = "excel", method = RequestMethod.POST, produces = "application/json; charset=utf8")

@@ -18,6 +18,7 @@ public class LectureForUser {
 	String topic;
 	String region;
 	String date;
+	String topic_name;
 	int morning;
 	int afternoon;
 	int evening;
@@ -117,6 +118,15 @@ public class LectureForUser {
 	public void setReg_date(Date reg_date) {
 		this.reg_date = reg_date;
 	}
+	
+	public String getTopic_name() {
+		return topic_name;
+	}
+
+	public void setTopic_name(String topic_name) {
+		this.topic_name = topic_name;
+	}
+
 
 	public String getDate() {
 		return date;

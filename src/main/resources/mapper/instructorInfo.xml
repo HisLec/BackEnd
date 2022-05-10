@@ -53,7 +53,7 @@
         inst.phone like #{keyword} OR inst.intro like #{keyword} OR
         inst.memo like #{keyword} OR p.name like #{keyword} OR u.email like #{keyword})
 		</if>
-		ORDER BY p.name, inst.name
+		ORDER BY  p.id desc, p.name, inst.name
    	</select>	  	
 
    	<select id="readAllInstructors" resultType="edu.handong.walab.model.dto.AdminInstructor" parameterType="hashmap">

@@ -33,6 +33,12 @@ public class SimpleLectureDAO implements LectureDAO{
 		}
 	}
 	
+	
+	@Override
+	public List<LectureForUser> getLectureTopicBySubject() {
+		return sqlSession.selectList(namespace+".readLectureTopicForUserBySubject");
+	}
+	
 	@Override
 	public List<LectureForUser> getAllLecture() {
 		

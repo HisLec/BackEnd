@@ -12,6 +12,8 @@ public interface LectureDAO {
 	
 	public List<LectureForUser> getLectureBySubject(int[] subject);
 
+	public List<LectureForUser> getLectureTopicBySubject();
+
 	public List<LectureForUser> getLectureByInstructor(int instructorId);
 
 	public List<LectureForUser> getLectureByDate(String date);
